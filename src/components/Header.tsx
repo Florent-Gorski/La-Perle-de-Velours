@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Phone, Menu, X } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+
+  // Empêche le scroll de la page quand le menu est ouvert
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [isMenuOpen]);
 
   const navigation = [
     { name: 'Accueil', href: '/' },
@@ -80,35 +92,43 @@ const Header: React.FC = () => {
           {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
 
-      {/* Mobile menu */}
+      </div>
+
+      {/* Mobile menu - Dropdown sous le header */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 border-t border-[#D4AF37]/10 bg-[#FDFBF7]/98 backdrop-blur">
-          <div className="py-4 space-y-1 px-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
+        <div className="md:hidden absolute top-full left-0 right-0 z-50 bg-[#fffaf5] border-b border-[#D4AF37]/20 shadow-lg">
+          <div className="px-4 py-6">
+            {/* Navigation links */}
+            <nav className="flex flex-col gap-3 mb-6">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block py-3 px-4 text-lg font-inter font-medium rounded-lg transition-all duration-300 min-h-[48px] flex items-center ${
+                    isActive(item.href)
+                      ? 'text-[#D4AF37] bg-[#D4AF37]/10'
+                      : 'text-[#2C2C2C] hover:text-[#D4AF37] hover:bg-[#F7F4ED]'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
+
+            {/* CTA Button */}
+            <div className="pt-4 border-t border-[#D4AF37]/10">
+              <a
+                href="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className={`block py-4 px-4 text-base font-inter font-medium rounded-lg transition-all duration-300 min-h-[44px] flex items-center ${
-                  isActive(item.href)
-                    ? 'text-[#D4AF37] bg-[#D4AF37]/10'
-                    : 'text-[#2C2C2C] hover:text-[#D4AF37] hover:bg-[#F7F4ED]'
-                }`}
+                className="block bg-[#D4AF37] text-white px-6 py-3 rounded-full text-lg font-inter font-medium hover:bg-[#E6C547] transition-all duration-300 text-center min-h-[48px] flex items-center justify-center"
               >
-                {item.name}
-              </Link>
-            ))}
-            <a
-              href="/contact"
-              onClick={() => setIsMenuOpen(false)}
-              className="block mt-4 bg-[#D4AF37] text-white px-6 py-4 rounded-full text-center font-inter font-medium hover:bg-[#E6C547] transition-all duration-300 min-h-[44px] flex items-center justify-center"
-            >
-            <h2 className="text-xl font-script font-bold text-perle-honey" style={{ fontFamily: 'Dancing Script, cursive' }}>La Perle de Velours</h2>
-            </a>
+                Réserver maintenant
+              </a>
+            </div>
           </div>
         </div>
       )}
-      </div>
     </header>
   );
 };
