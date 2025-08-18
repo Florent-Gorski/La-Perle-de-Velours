@@ -36,7 +36,7 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate form submission
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -50,6 +50,7 @@ const Contact: React.FC = () => {
         preferredDate: '',
         preferredTime: ''
       });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setSubmitStatus('error');
     } finally {
@@ -66,7 +67,7 @@ const Contact: React.FC = () => {
             Réserver Votre Service Beauté
           </h1>
           <p className="text-base md:text-xl text-white/90 max-w-3xl mx-auto px-4">
-            Manucure, esthétique, massage à domicile Lausanne et Canton de Vaud. 
+            Manucure, esthétique, massage à domicile Lausanne et Canton de Vaud.
             Réponse rapide par téléphone ou WhatsApp.
           </p>
         </div>
@@ -77,14 +78,14 @@ const Contact: React.FC = () => {
           {/* Contact Info */}
           <div>
             <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Contact Direct</h2>
-            
+
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
                 <Phone className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Téléphone</h3>
-                  <a 
-                    href="tel:+41123456789" 
+                  <a
+                    href="tel:+41123456789"
                     className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter text-lg font-medium"
                   >
                     +41 12 345 67 89
@@ -97,9 +98,9 @@ const Contact: React.FC = () => {
                 <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">WhatsApp</h3>
-                  <a 
-                    href="https://wa.me/41123456789" 
-                    target="_blank" 
+                  <a
+                    href="https://wa.me/41123456789"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter text-lg font-medium"
                   >
@@ -113,11 +114,11 @@ const Contact: React.FC = () => {
                 <Mail className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Email</h3>
-                  <a 
-                    href="mailto:perledevelours@gmail.com" 
+                  <a
+                    href="mailto:perledevelours@gmail.com"
                     className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter"
                   >
-                    perledevelours@gmail.com
+                    laperledevelours@gmail.com
                   </a>
                   <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Réponse sous 24h</p>
                 </div>
@@ -139,7 +140,6 @@ const Contact: React.FC = () => {
                   <div className="text-rosa-warm-gray/70 font-inter space-y-1 text-sm md:text-base">
                     <p>Lun-Ven: 8h00 - 20h00</p>
                     <p>Samedi: 9h00 - 19h00</p>
-                    <p>Dimanche: 10h00 - 18h00</p>
                   </div>
                 </div>
               </div>
@@ -189,7 +189,7 @@ const Contact: React.FC = () => {
           <div>
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Demande de Réservation</h2>
-              
+
               {submitStatus === 'success' && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
                   <p className="text-green-800 font-inter">
