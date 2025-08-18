@@ -1,131 +1,59 @@
-import React from 'react';
-import { MapPin, Clock, Car, Info } from 'lucide-react';
-import ZoneTable from '../components/ZoneTable';
-import { zones } from '../lib/zones';
+import React from "react";
 
-const Zones: React.FC = () => {
+const HeroSection: React.FC<{ image: string; title: string; subtitle?: string }> = ({ image, title, subtitle }) => (
+  <section className="relative h-[320px] md:h-[420px] isolate">
+    <img src={image} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />
+    <div className="absolute inset-0 -z-10" style={{ background: "linear-gradient(0deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.30) 60%, rgba(0,0,0,0.15) 100%)" }} />
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-full flex items-center">
+      <div className="text-white text-center w-full">
+        <h1 className="font-playfair text-3xl md:text-5xl font-extrabold drop-shadow">{title}</h1>
+        {subtitle && <p className="mt-3 text-white/90 md:text-lg">{subtitle}</p>}
+      </div>
+    </div>
+  </section>
+);
+
+const Zones: React.FC = () =>
+{
+  const infos = [
+    { label: "Frais de déplacement", value: "Calculés selon la distance depuis Lausanne" },
+    { label: "Minimum de prestation", value: "45 CHF" },
+    { label: "Parking", value: "Gratuit requis" },
+    { label: "Accès", value: "Accès facile au domicile" },
+  ];
+
+  const zones = [
+    "Lausanne", "Pully", "Renens", "Préverenges", "Morges", "Prilly", "Ecublens", "Crissier",
+    "Lutry", "Epalinges", "Chavannes-près-Renens", "Bussigny", "Saint-Sulpice", "Vevey", "Montreux"
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-rosa-honey to-rosa-light-honey py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Zones Desservies
-          </h1>
-          <p className="text-xl text-white/90 max-w-3xl mx-auto">
-            Nous intervenons à domicile à Lausanne et dans tout le canton de Vaud : manucure, soins visage/corps et massages bien-être.
-            Les frais de déplacement varient selon la distance depuis notre base à Lausanne.
-          </p>
-        </div>
-      </section>
+    <div className="min-h-screen bg-rosa-ivory">
+      <HeroSection
+        title="Zones Desservies"
+        subtitle="Nous intervenons à Lausanne et dans tout le canton de Vaud"
+        image="https://images.pexels.com/photos/3861961/pexels-photo-3861961.jpeg?auto=compress&cs=tinysrgb&w=2000&h=900&dpr=1"
+      />
 
-      {/* Info Section */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-rosa-soft-beige border border-rosa-beige rounded-2xl p-8">
-            <div className="flex items-start space-x-3">
-              <Info className="w-6 h-6 text-rosa-honey mt-1" />
-              <div>
-                <h2 className="text-xl font-bold text-rosa-warm-gray mb-3">Informations importantes</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-rosa-warm-gray">
-                  <div>
-                    <h3 className="font-semibold mb-2">Frais de déplacement</h3>
-                    <ul className="space-y-1 text-sm">
-                      <li>• Calculés selon la distance depuis Genève</li>
-                      <li>• Calculés selon la distance depuis Lausanne</li>
-                      <li>• Appliqués une seule fois par rendez-vous</li>
-                      <li>• Gratuits pour Lausanne centre</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Conditions</h3>
-                    <ul className="space-y-1 text-sm">
-                      <li>• Prestation minimum de 45 CHF</li>
-                      <li>• Parking gratuit requis</li>
-                      <li>• Accès facile au domicile</li>
-                    </ul>
-                  </div>
+      <section className="py-10 md:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-3xl shadow p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-6">Informations importantes</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {infos.map((i, idx) => (
+                <div key={idx} className="p-4 rounded-xl bg-rosa-soft-beige">
+                  <p className="font-inter font-semibold text-rosa-warm-gray">{i.label}</p>
+                  <p className="text-rosa-warm-gray/70">{i.value}</p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Zones Table */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ZoneTable zones={zones} />
-        </div>
-      </section>
-
-      {/* Coverage Map Info */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Zone de Couverture
-            </h2>
-            <p className="text-xl text-gray-600">
-              Nous intervenons dans toute la région genevoise
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 bg-gray-50 rounded-2xl">
-              <MapPin className="w-12 h-12 text-rosa-honey mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Zone Gratuite</h3>
-              <p className="text-gray-600">
-                Lausanne centre (1000-1018)
-                <br />Aucun frais de déplacement
-              </p>
+              ))}
             </div>
 
-            <div className="text-center p-6 bg-gray-50 rounded-2xl">
-              <Clock className="w-12 h-12 text-rosa-honey mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Zone Proche</h3>
-              <p className="text-gray-600">
-                15-25 minutes
-                <br />Frais de 5-10 CHF
-              </p>
-            </div>
-
-            <div className="text-center p-6 bg-gray-50 rounded-2xl">
-              <Car className="w-12 h-12 text-rosa-honey mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Zone Élargie</h3>
-              <p className="text-gray-600">
-                30-35 minutes
-                <br />Frais de 15-20 CHF
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Zone Request */}
-      <section className="py-20 bg-gradient-to-r from-rosa-honey to-rosa-light-honey">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Votre zone n'est pas listée ?
-          </h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Contactez-nous ! Nous étudions toute demande pour étendre notre zone de couverture.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/contact"
-              className="bg-white text-rosa-honey px-8 py-4 rounded-full text-lg font-medium hover:bg-rosa-ivory transition-all duration-300 hover:scale-105"
-            >
-              Réserver maintenant
-            </a>
-            <a
-              href="https://wa.me/41123456789"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-green-500 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-green-600 transition-all duration-300 hover:scale-105"
-            >
-              WhatsApp
-            </a>
+            <h3 className="mt-8 text-lg md:text-xl font-playfair font-bold text-rosa-warm-gray">Communes principales</h3>
+            <ul className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3">
+              {zones.map((z, i) => (
+                <li key={i} className="px-3 py-2 rounded-lg bg-white border border-rosa-beige/60 text-rosa-warm-gray/80">{z}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>

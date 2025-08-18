@@ -1,58 +1,110 @@
-import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from "react";
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import HeroCarousel from "@/components/HeroCarousel"; // ✅ bon import
+
+/**
+ * Slugs de forfaits -> libellés affichés
+ */
+const FORFAIT_LABELS: Record<string, string> = {
+  detente: "Forfait Détente",
+  "forfait-detente": "Forfait Détente",
+  beaute: "Forfait Beauté",
+  "forfait-beaute": "Forfait Beauté",
+  premium: "Forfait Premium",
+  "forfait-premium": "Forfait Premium",
+};
+
+/** Format YYYY-MM-DD local (évite décalage UTC) */
+function todayLocalISO(): string {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${dd}`;
+}
 
 const Contact: React.FC = () => {
+  const location = useLocation();
+  const params = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const forfaitParam = (params.get("forfait") || "").toLowerCase().trim();
+  const forfaitLabelInitial = FORFAIT_LABELS[forfaitParam] || "";
+
+  const [selectedForfait, setSelectedForfait] = useState<string>(forfaitLabelInitial);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
-    preferredDate: '',
-    preferredTime: ''
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
+    preferredDate: "",
+    preferredTime: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-
   const services = [
-    'Manucure',
-    'Pédicure',
-    'Soin du visage',
-    'Massage',
-    'Forfait beauté',
-    'Prestation entreprise',
-    'Autre'
+    "Manucure",
+    "Pédicure",
+    "Soin du visage",
+    "Massage",
+    "Forfait Beauté",
+    "Forfait Détente",
+    "Forfait Premium",
+    "Prestation entreprise",
+    "Autre",
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  /** Préremplissage si on arrive avec ?forfait=... */
+  useEffect(() => {
+    if (!selectedForfait) return;
+    setFormData((prev) => {
+      const nextService = prev.service || selectedForfait;
+      const line = `Forfait choisi : ${selectedForfait}`;
+      const hasLine = prev.message.includes(line);
+      return {
+        ...prev,
+        service: nextService,
+        message: hasLine ? prev.message : (prev.message ? `${prev.message}\n${line}` : line),
+      };
+    });
+  }, [selectedForfait]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
+    setFormData((p) => ({ ...p, [name]: value }));
+  };
+
+  const clearForfait = () => {
+    setSelectedForfait("");
+    setFormData((p) => ({
+      ...p,
+      message: p.message.replace(/(^|\n)Forfait choisi : .+(\n|$)/, "\n").trim(),
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitStatus('success');
+      // ➜ ici tu peux appeler ton backend /api/book (Google Agenda)
+      await new Promise((r) => setTimeout(r, 800));
+      setSubmitStatus("success");
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: '',
-        message: '',
-        preferredDate: '',
-        preferredTime: ''
+        name: "",
+        email: "",
+        phone: "",
+        service: "",
+        message: "",
+        preferredDate: "",
+        preferredTime: "",
       });
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      setSubmitStatus('error');
+      setSelectedForfait("");
+    } catch {
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -60,24 +112,16 @@ const Contact: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-rosa-honey to-rosa-light-honey py-12 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-white mb-4 md:mb-6">
-            Réserver Votre Service Beauté
-          </h1>
-          <p className="text-base md:text-xl text-white/90 max-w-3xl mx-auto px-4">
-            Manucure, esthétique, massage à domicile Lausanne et Canton de Vaud.
-            Réponse rapide par téléphone ou WhatsApp.
-          </p>
-        </div>
-      </section>
+      {/* ✅ On utilise le HeroCarousel (pas <Hero …/>) */}
+      <HeroCarousel />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-20">
         <div className="space-y-12 lg:grid lg:grid-cols-2 lg:gap-16 lg:space-y-0">
-          {/* Contact Info */}
+          {/* Infos de contact (garde ce bloc si tu le veux) */}
           <div>
-            <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Contact Direct</h2>
+            <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">
+              Contact Direct
+            </h2>
 
             <div className="space-y-6 md:space-y-8">
               <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
@@ -90,7 +134,7 @@ const Contact: React.FC = () => {
                   >
                     +41 12 345 67 89
                   </a>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Lun-Sam 8h-20h, Dim 10h-18h</p>
+                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Lun–Sam 8h–20h, Dim 10h–18h</p>
                 </div>
               </div>
 
@@ -115,7 +159,7 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Email</h3>
                   <a
-                    href="mailto:perledevelours@gmail.com"
+                    href="mailto:laperledevelours@gmail.com"
                     className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter"
                   >
                     laperledevelours@gmail.com
@@ -129,7 +173,6 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Zone d'intervention</h3>
                   <p className="text-rosa-warm-gray/70 font-inter">Lausanne et canton de Vaud</p>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Voir toutes les zones desservies</p>
                 </div>
               </div>
 
@@ -138,67 +181,47 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Horaires</h3>
                   <div className="text-rosa-warm-gray/70 font-inter space-y-1 text-sm md:text-base">
-                    <p>Lun-Ven: 8h00 - 20h00</p>
-                    <p>Samedi: 9h00 - 19h00</p>
+                    <p>Lun–Ven : 8h00 – 20h00</p>
+                    <p>Samedi : 9h00 – 19h00</p>
                   </div>
                 </div>
               </div>
             </div>
-
-            {/* Emergency Contact */}
-            <div className="mt-8 md:mt-12 bg-rosa-soft-beige rounded-2xl p-6">
-              <h3 className="font-inter font-semibold text-rosa-warm-gray mb-4">Réservation Express</h3>
-              <p className="text-rosa-warm-gray/70 font-inter mb-4 text-sm md:text-base">
-                Besoin d'un RDV dans les 24h ? Appelez directement :
-              </p>
-              <div className="mb-4">
-                <p className="text-rosa-warm-gray/70 font-inter text-sm">
-                  <strong>Site officiel :</strong>{" "}
-                  <a
-                    href="https://perlesdevelours.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-rosa-honey hover:text-rosa-light-honey"
-                  >
-                    perlesdevelours.com
-                  </a>
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:gap-3">
-                <a
-                  href="tel:+41123456789"
-                  className="flex items-center justify-center space-x-2 bg-rosa-honey text-white px-6 py-4 rounded-full font-inter font-medium hover:bg-rosa-light-honey transition-colors min-h-[48px]"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>Appeler</span>
-                </a>
-                <a
-                  href="https://wa.me/41123456789"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 bg-green-500 text-white px-6 py-4 rounded-full font-inter font-medium hover:bg-green-600 transition-colors min-h-[48px]"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
-                </a>
-              </div>
-            </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Formulaire */}
           <div>
             <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Demande de Réservation</h2>
+              <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-4 md:mb-6">
+                Demande de Réservation
+              </h2>
 
-              {submitStatus === 'success' && (
+              {/* Badge Forfait */}
+              {selectedForfait && (
+                <div className="mb-4 flex items-center justify-between rounded-xl border border-rosa-beige/60 bg-rosa-soft-beige/60 px-4 py-3">
+                  <p className="font-inter text-sm md:text-base text-rosa-warm-gray">
+                    <span className="font-medium">Forfait choisi :</span> {selectedForfait}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={clearForfait}
+                    className="inline-flex items-center gap-1 text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                    <span className="text-sm">Retirer</span>
+                  </button>
+                </div>
+              )}
+
+              {submitStatus === "success" && (
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
                   <p className="text-green-800 font-inter">
-                    Merci ! Votre message a été envoyé avec succès. Nous vous recontacterons rapidement.
+                    Merci ! Votre message a été envoyé. Nous vous recontacterons rapidement.
                   </p>
                 </div>
               )}
 
-              {submitStatus === 'error' && (
+              {submitStatus === "error" && (
                 <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
                   <p className="text-red-800 font-inter">
                     Une erreur s'est produite. Veuillez réessayer ou nous contacter directement.
@@ -267,8 +290,10 @@ const Contact: React.FC = () => {
                     className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
                   >
                     <option value="">Sélectionnez un service</option>
-                    {services.map((service, index) => (
-                      <option key={index} value={service}>{service}</option>
+                    {services.map((service, idx) => (
+                      <option key={idx} value={service}>
+                        {service}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -284,11 +309,10 @@ const Contact: React.FC = () => {
                       name="preferredDate"
                       value={formData.preferredDate}
                       onChange={handleInputChange}
-                      min={new Date().toISOString().split('T')[0]}
+                      min={todayLocalISO()}
                       className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
                     />
                   </div>
-
                   <div>
                     <label htmlFor="preferredTime" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
                       Heure souhaitée
@@ -314,7 +338,7 @@ const Contact: React.FC = () => {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows={4}
-                    placeholder="Adresse exacte, besoins particuliers, questions..."
+                    placeholder="Adresse exacte, besoins particuliers, questions…"
                     className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter resize-none"
                   />
                 </div>
@@ -325,7 +349,7 @@ const Contact: React.FC = () => {
                   className="w-full bg-rosa-honey text-white py-4 px-6 rounded-xl font-inter font-medium hover:bg-rosa-light-honey focus:ring-2 focus:ring-rosa-honey/50 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 min-h-[48px]"
                 >
                   {isSubmitting ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
@@ -335,7 +359,7 @@ const Contact: React.FC = () => {
                 </button>
 
                 <p className="text-sm text-rosa-warm-gray/60 font-inter text-center">
-                  En soumettant ce formulaire, vous acceptez notre{' '}
+                  En soumettant ce formulaire, vous acceptez notre{" "}
                   <a href="/privacy" className="text-rosa-honey hover:text-rosa-light-honey">
                     politique de confidentialité
                   </a>.
