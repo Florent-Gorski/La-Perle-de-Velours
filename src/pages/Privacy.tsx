@@ -5,18 +5,36 @@ const Privacy: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-pink-600 to-pink-700 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Shield className="w-16 h-16 text-pink-200 mx-auto mb-6" />
+      <section className="relative py-12 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <picture>
+            <source srcSet="/images/privacy.avif" type="image/avif" />
+            <source srcSet="/images/privacy.webp" type="image/webp" />
+            <img
+              src="/images/privacy.jpg"
+              alt="Politique de confidentialité"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: 'center 40%' }}
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <div className="absolute inset-0 -z-10 bg-black/50" aria-hidden="true"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <Shield className="w-16 h-16 text-white/80 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Politique de Confidentialité
           </h1>
-          <p className="text-xl text-pink-100 max-w-3xl mx-auto">
-            Votre vie privée est importante pour nous. Cette politique explique comment nous collectons, 
-            utilisons et protégeons vos informations personnelles.
+          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+            Votre vie privée est importante pour nous. Cette politique explique
+            comment nous collectons, utilisons et protégeons vos informations
+            personnelles.
           </p>
         </div>
       </section>
+
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
@@ -278,7 +296,7 @@ const Privacy: React.FC = () => {
                       Téléphone: <a href="tel:+41123456789" className="text-pink-600 hover:text-pink-700">+41 12 345 67 89</a>
                     </p>
                   </div>
-                  
+
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">Autorité de contrôle</h3>
                     <p className="text-gray-700">

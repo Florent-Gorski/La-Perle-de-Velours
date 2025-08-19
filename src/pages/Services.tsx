@@ -52,14 +52,29 @@ const Services: React.FC = () => {
   return (
     <div className="min-h-screen bg-rosa-ivory">
       {/* Hero Section */}
-      <section className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg)' }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
+      <section className="relative py-12 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <picture>
+            <source srcSet="/images/services.avif" type="image/avif" />
+            <source srcSet="/images/services.webp" type="image/webp" />
+            <img
+              src="/images/services.jpg"
+              alt="Prestations de beauté"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: 'center 35%' }}
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true"></div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-white mb-4 md:mb-6">
             Nos Prestations
           </h1>
           <p className="text-base md:text-xl text-white/95 max-w-3xl mx-auto px-4">
-            Manucure, esthétique et massages à domicile en Suisse romande. 
+            Manucure, esthétique et massages à domicile en Suisse romande.
             Services premium par esthéticienne diplômée, dans le confort de votre domicile.
           </p>
         </div>
@@ -79,7 +94,7 @@ const Services: React.FC = () => {
                     {category.category}
                   </h2>
                 </div>
-                
+
                 <div className="p-4 md:p-8">
                   <div className="space-y-4 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
                     {category.services.map((service, serviceIndex) => (

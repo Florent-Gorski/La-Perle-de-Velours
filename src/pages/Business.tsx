@@ -76,16 +76,36 @@ const Business: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg)' }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      {/* Hero Section (image de fond + overlay) */}
+      <section className="relative py-20 overflow-hidden">
+        {/* IMAGE DE FOND */}
+        <div className="absolute inset-0 -z-10">
+          <picture>
+            <source srcSet="/images/entreprises.avif" type="image/avif" />
+            <source srcSet="/images/entreprises.webp" type="image/webp" />
+            <img
+              src="/images/entreprises.jpg"
+              alt=""
+              aria-hidden="true"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: 'center 35%' }}
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </div>
+
+        {/* OVERLAY */}
+        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true"></div>
+
+        {/* CONTENU TEXTE (inchangé) */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Building2 className="w-16 h-16 text-white/80 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Services pour Entreprises
           </h1>
-          <p className="text-xl text-white/95 max-w-3xl mx-auto">
-            Offrez à vos employés et clients des services de beauté et bien-être directement 
+          <p className="text-xl text-white/90 max-w-3xl mx-auto">
+            Offrez à vos employés et clients des services de beauté et bien-être directement
             dans vos locaux. Une initiative qui valorise votre image et améliore la satisfaction.
           </p>
         </div>

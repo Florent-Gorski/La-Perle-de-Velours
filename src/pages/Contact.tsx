@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
 
-const Contact: React.FC = () => {
+const Contact: React.FC = () =>
+{
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,21 +26,22 @@ const Contact: React.FC = () => {
     'Autre'
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) =>
+  {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (submitStatus !== 'idle') setSubmitStatus('idle');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) =>
+  {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // TODO: remplace par ton appel API/email (Resend, Formspree, Netlify Forms, etc.)
+      await new Promise(resolve => setTimeout(resolve, 800));
       setSubmitStatus('success');
       setFormData({
         name: '',
@@ -50,7 +52,7 @@ const Contact: React.FC = () => {
         preferredDate: '',
         preferredTime: ''
       });
-    } catch (error) {
+    } catch {
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -59,291 +61,212 @@ const Contact: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* Hero Section */}
-      <section className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg)' }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* HERO image locale + overlay */}
+      <section className="relative py-12 md:py-20 overflow-hidden">
+        <div className="absolute inset-0 -z-10">
+          <picture>
+            <source srcSet="/images/contact.avif" type="image/avif" />
+            <source srcSet="/images/contact.webp" type="image/webp" />
+            <img
+              src="/images/contact.jpg"
+              alt="Contact"
+              className="h-full w-full object-cover"
+              style={{ objectPosition: 'center 35%' }}
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-white mb-4 md:mb-6">
             Réserver Votre Service Beauté
           </h1>
-          <p className="text-base md:text-xl text-white/95 max-w-3xl mx-auto px-4 relative z-10">
-            Manucure, esthétique, massage à domicile Lausanne et Canton de Vaud. 
-            Réponse rapide par téléphone ou WhatsApp.
+          <p className="text-base md:text-xl text-white/95 max-w-3xl mx-auto px-4">
+            Manucure, esthétique, massage à domicile — Lausanne & Canton de Vaud. Réponse rapide par téléphone ou WhatsApp.
           </p>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-20">
-        <div className="space-y-12 lg:grid lg:grid-cols-2 lg:gap-16 lg:space-y-0">
-          {/* Contact Info */}
-          <div>
-            <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Contact Direct</h2>
-            
-            <div className="space-y-6 md:space-y-8">
-              <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
-                <Phone className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Téléphone</h3>
-                  <a 
-                    href="tel:+41123456789" 
-                    className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter text-lg font-medium"
-                  >
-                    +41 12 345 67 89
-                  </a>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Lun-Sam 8h-20h, Dim 10h-18h</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
-                <MessageCircle className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">WhatsApp</h3>
-                  <a 
-                    href="https://wa.me/41123456789" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter text-lg font-medium"
-                  >
-                    +41 12 345 67 89
-                  </a>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Réponse rapide garantie</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
-                <Mail className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Email</h3>
-                  <a 
-                    href="mailto:perledevelours@gmail.com" 
-                    className="text-rosa-warm-gray/70 hover:text-rosa-honey transition-colors font-inter"
-                  >
-                    perledevelours@gmail.com
-                  </a>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Réponse sous 24h</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
-                <MapPin className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Zone d'intervention</h3>
-                  <p className="text-rosa-warm-gray/70 font-inter">Lausanne et canton de Vaud</p>
-                  <p className="text-sm text-rosa-warm-gray/60 font-inter mt-1">Voir toutes les zones desservies</p>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-4 p-4 bg-white rounded-xl shadow-sm">
-                <Clock className="w-5 h-5 md:w-6 md:h-6 text-rosa-honey mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Horaires</h3>
-                  <div className="text-rosa-warm-gray/70 font-inter space-y-1 text-sm md:text-base">
-                    <p>Lun-Ven: 8h00 - 20h00</p>
-                    <p>Samedi: 9h00 - 19h00</p>
-                    <p>Dimanche: 10h00 - 18h00</p>
-                  </div>
-                </div>
-              </div>
+      {/* Contenu */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Infos de contact (icônes utilisées) */}
+          <aside className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
+                <Phone className="w-5 h-5 text-rosa-honey" />
+                Téléphone
+              </h2>
+              <p className="font-inter text-rosa-warm-gray/80">
+                <a href="tel:+41790000000" className="text-rosa-honey hover:underline">+41 79 000 00 00</a>
+              </p>
             </div>
 
-            {/* Emergency Contact */}
-            <div className="mt-8 md:mt-12 bg-rosa-soft-beige rounded-2xl p-6">
-              <h3 className="font-inter font-semibold text-rosa-warm-gray mb-4">Réservation Express</h3>
-              <p className="text-rosa-warm-gray/70 font-inter mb-4 text-sm md:text-base">
-                Besoin d'un RDV dans les 24h ? Appelez directement :
-              </p>
-              <div className="mb-4">
-                <p className="text-rosa-warm-gray/70 font-inter text-sm">
-                  <strong>Site officiel :</strong>{" "}
-                  <a
-                    href="https://perlesdevelours.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-rosa-honey hover:text-rosa-light-honey"
-                  >
-                    perlesdevelours.com
-                  </a>
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row sm:gap-3">
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
+                <MessageCircle className="w-5 h-5 text-green-500" />
+                WhatsApp
+              </h2>
+              <p className="font-inter text-rosa-warm-gray/80">
                 <a
-                  href="tel:+41123456789"
-                  className="flex items-center justify-center space-x-2 bg-rosa-honey text-white px-6 py-4 rounded-full font-inter font-medium hover:bg-rosa-light-honey transition-colors min-h-[48px]"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>Appeler</span>
-                </a>
-                <a
-                  href="https://wa.me/41123456789"
+                  href="https://wa.me/41790000000"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-2 bg-green-500 text-white px-6 py-4 rounded-full font-inter font-medium hover:bg-green-600 transition-colors min-h-[48px]"
+                  className="text-rosa-honey hover:underline"
                 >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
+                  Démarrer une discussion
                 </a>
-              </div>
+              </p>
             </div>
-          </div>
 
-          {/* Contact Form */}
-          <div>
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h2 className="text-2xl md:text-3xl font-playfair font-bold text-rosa-warm-gray mb-6 md:mb-8">Demande de Réservation</h2>
-              
-              {submitStatus === 'success' && (
-                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
-                  <p className="text-green-800 font-inter">
-                    Merci ! Votre message a été envoyé avec succès. Nous vous recontacterons rapidement.
-                  </p>
-                </div>
-              )}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
+                <Mail className="w-5 h-5 text-rosa-honey" />
+                Email
+              </h2>
+              <p className="font-inter text-rosa-warm-gray/80">
+                <a href="mailto:contact@maisonbeautemobile.ch" className="text-rosa-honey hover:underline">
+                  contact@maisonbeautemobile.ch
+                </a>
+              </p>
+            </div>
 
-              {submitStatus === 'error' && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-800 font-inter">
-                    Une erreur s'est produite. Veuillez réessayer ou nous contacter directement.
-                  </p>
-                </div>
-              )}
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
+                <MapPin className="w-5 h-5 text-rosa-honey" />
+                Zone
+              </h2>
+              <p className="font-inter text-rosa-warm-gray/80">
+                Lausanne & canton de Vaud
+              </p>
+            </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                      Nom complet *
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
-                    />
-                  </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
+                <Clock className="w-5 h-5 text-rosa-honey" />
+                Horaires
+              </h2>
+              <p className="font-inter text-rosa-warm-gray/80">
+                Lun–Ven : 09:00–19:00 · Sam : 10:00–17:00
+              </p>
+            </div>
+          </aside>
 
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                      Téléphone *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
-                    />
-                  </div>
-                </div>
+          {/* Formulaire (toutes les variables sont utilisées) */}
+          <section className="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-6 flex items-center gap-3">
+              <Send className="w-5 h-5 text-rosa-honey" />
+              Demande de réservation
+            </h2>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                    Email *
-                  </label>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className="font-inter text-sm text-rosa-warm-gray">Nom et prénom</span>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
+                  />
+                </label>
+
+                <label className="flex flex-col gap-2">
+                  <span className="font-inter text-sm text-rosa-warm-gray">Email</span>
                   <input
                     type="email"
-                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
+                    className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
                   />
-                </div>
+                </label>
 
-                <div>
-                  <label htmlFor="service" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                    Service souhaité *
-                  </label>
+                <label className="flex flex-col gap-2 md:col-span-2">
+                  <span className="font-inter text-sm text-rosa-warm-gray">Téléphone</span>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
+                  />
+                </label>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className="font-inter text-sm text-rosa-warm-gray">Service souhaité</span>
                   <select
-                    id="service"
                     name="service"
                     value={formData.service}
                     onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
+                    className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
                   >
-                    <option value="">Sélectionnez un service</option>
-                    {services.map((service, index) => (
-                      <option key={index} value={service}>{service}</option>
+                    <option value="">— Choisir —</option>
+                    {services.map(s => (
+                      <option key={s} value={s}>{s}</option>
                     ))}
                   </select>
-                </div>
+                </label>
 
-                <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
-                  <div>
-                    <label htmlFor="preferredDate" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                      Date souhaitée
-                    </label>
+                <div className="grid grid-cols-2 gap-4">
+                  <label className="flex flex-col gap-2">
+                    <span className="font-inter text-sm text-rosa-warm-gray">Date souhaitée</span>
                     <input
                       type="date"
-                      id="preferredDate"
                       name="preferredDate"
                       value={formData.preferredDate}
                       onChange={handleInputChange}
-                      min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
+                      className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
                     />
-                  </div>
-
-                  <div>
-                    <label htmlFor="preferredTime" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                      Heure souhaitée
-                    </label>
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="font-inter text-sm text-rosa-warm-gray">Heure</span>
                     <input
                       type="time"
-                      id="preferredTime"
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter min-h-[48px]"
+                      className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-inter font-medium text-rosa-warm-gray mb-2">
-                    Message
                   </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={4}
-                    placeholder="Adresse exacte, besoins particuliers, questions..."
-                    className="w-full px-4 py-4 border border-rosa-beige/50 rounded-xl focus:ring-2 focus:ring-rosa-honey/50 focus:border-rosa-honey transition-colors font-inter resize-none"
-                  />
                 </div>
+              </div>
 
+              <label className="flex flex-col gap-2">
+                <span className="font-inter text-sm text-rosa-warm-gray">Message</span>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  rows={5}
+                  className="rounded-xl border border-rosa-beige/60 px-4 py-3 outline-none focus:ring-2 focus:ring-rosa-honey/40"
+                />
+              </label>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-rosa-honey text-white py-4 px-6 rounded-xl font-inter font-medium hover:bg-rosa-light-honey focus:ring-2 focus:ring-rosa-honey/50 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 min-h-[48px]"
+                  className="w-full sm:w-auto bg-rosa-honey text-white px-6 py-3 rounded-full font-inter font-medium hover:bg-rosa-light-honey transition-colors min-h-[44px] disabled:opacity-60"
                 >
-                  {isSubmitting ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Envoyer le message</span>
-                    </>
-                  )}
+                  {isSubmitting ? 'Envoi…' : 'Envoyer la demande'}
                 </button>
 
-                <p className="text-sm text-rosa-warm-gray/60 font-inter text-center">
-                  En soumettant ce formulaire, vous acceptez notre{' '}
-                  <a href="/privacy" className="text-rosa-honey hover:text-rosa-light-honey">
-                    politique de confidentialité
-                  </a>.
-                </p>
-              </form>
-            </div>
-          </div>
+                {submitStatus === 'success' && (
+                  <span className="text-green-600 font-inter">Merci ! Nous vous répondons au plus vite.</span>
+                )}
+                {submitStatus === 'error' && (
+                  <span className="text-red-600 font-inter">Oups, une erreur est survenue. Réessaye.</span>
+                )}
+              </div>
+            </form>
+          </section>
         </div>
       </div>
     </div>
