@@ -40,7 +40,6 @@ const Contact: React.FC = () =>
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // TODO: remplace par ton appel API/email (Resend, Formspree, Netlify Forms, etc.)
       await new Promise(resolve => setTimeout(resolve, 800));
       setSubmitStatus('success');
       setFormData({
@@ -61,23 +60,13 @@ const Contact: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* HERO image locale + overlay */}
-      <section className="relative py-12 md:py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <picture>
-            <source srcSet="/images/contact.avif" type="image/avif" />
-            <source srcSet="/images/contact.webp" type="image/webp" />
-            <img
-              src="/images/contact.jpg"
-              alt="Contact"
-              className="h-full w-full object-cover"
-              style={{ objectPosition: 'center 35%' }}
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        </div>
-        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true" />
+      {/* Hero (image locale) */}
+      <section
+        className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/contact.jpg)' }}
+      >
+        <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-white mb-4 md:mb-6">
             Réserver Votre Service Beauté
@@ -88,10 +77,10 @@ const Contact: React.FC = () =>
         </div>
       </section>
 
-      {/* Contenu */}
+      {/* Infos + Formulaire */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Infos de contact (icônes utilisées) */}
+          {/* Infos */}
           <aside className="space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-sm">
               <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 flex items-center gap-3">
@@ -153,7 +142,7 @@ const Contact: React.FC = () =>
             </div>
           </aside>
 
-          {/* Formulaire (toutes les variables sont utilisées) */}
+          {/* Formulaire */}
           <section className="bg-white rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-6 flex items-center gap-3">
               <Send className="w-5 h-5 text-rosa-honey" />

@@ -7,28 +7,13 @@ const Zones: React.FC = () =>
 {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section (image locale + overlay) */}
-      <section className="relative py-20 overflow-hidden">
-        {/* IMAGE DE FOND */}
-        <div className="absolute inset-0 -z-10">
-          <picture>
-            <source srcSet="/images/zones.avif" type="image/avif" />
-            <source srcSet="/images/zones.webp" type="image/webp" />
-            <img
-              src="/images/zones.jpg"
-              alt=""
-              aria-hidden="true"
-              className="h-full w-full object-cover"
-              style={{ objectPosition: 'center 45%' }}
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        </div>
-        {/* OVERLAY demandé */}
-        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true"></div>
+      {/* Hero (image locale) */}
+      <section
+        className="relative py-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/zones.jpg)' }}
+      >
+        <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
-        {/* CONTENU TEXTE (inchangé) */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Zones Desservies
@@ -40,7 +25,7 @@ const Zones: React.FC = () =>
         </div>
       </section>
 
-      {/* Info Section (inchangé) */}
+      {/* Info Section */}
       <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-rosa-soft-beige border border-rosa-beige rounded-2xl p-8">
@@ -73,14 +58,14 @@ const Zones: React.FC = () =>
         </div>
       </section>
 
-      {/* Zones Table (inchangé) */}
+      {/* Zones Table */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ZoneTable zones={zones} />
         </div>
       </section>
 
-      {/* Coverage Map Info (inchangé) */}
+      {/* Coverage Map Info */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -123,7 +108,7 @@ const Zones: React.FC = () =>
         </div>
       </section>
 
-      {/* Zone Request (inchangé) */}
+      {/* Zone Request */}
       <section className="py-20 bg-gradient-to-r from-rosa-honey to-rosa-light-honey">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">

@@ -96,23 +96,12 @@ const Pricing: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* Hero Section — image locale /images/tarifs.jpg */}
-      <section className="relative py-12 md:py-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <picture>
-            <source srcSet="/images/tarifs.avif" type="image/avif" />
-            <source srcSet="/images/tarifs.webp" type="image/webp" />
-            <img
-              src="/images/tarifs.jpg"
-              alt="Tarifs"
-              className="h-full w-full object-cover"
-              style={{ objectPosition: 'center 35%' }}
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        </div>
-        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true"></div>
+      {/* Hero (image locale) */}
+      <section
+        className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/tarifs.jpg)' }}
+      >
+        <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-playfair font-bold text-white mb-4 md:mb-6">
@@ -125,7 +114,7 @@ const Pricing: React.FC = () =>
         </div>
       </section>
 
-      {/* Important Info */}
+      {/* Informations Tarifs */}
       <section className="py-8 md:py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-rosa-soft-beige rounded-2xl p-6 md:p-8">
@@ -148,7 +137,7 @@ const Pricing: React.FC = () =>
         </div>
       </section>
 
-      {/* Packages Section */}
+      {/* Forfaits */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-16">
@@ -218,7 +207,7 @@ const Pricing: React.FC = () =>
         </div>
       </section>
 
-      {/* Individual Services */}
+      {/* Prestations individuelles */}
       <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-16">
@@ -265,7 +254,7 @@ const Pricing: React.FC = () =>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-12 md:py-20 bg-gradient-to-r from-rosa-honey to-rosa-light-honey">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-white mb-4 md:mb-6">

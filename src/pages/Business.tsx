@@ -1,7 +1,8 @@
 import React from 'react';
 import { Building2, Users, Clock, Gift, Star, Zap } from 'lucide-react';
 
-const Business: React.FC = () => {
+const Business: React.FC = () =>
+{
   const benefits = [
     {
       icon: <Users className="w-8 h-8 text-rosa-honey" />,
@@ -76,29 +77,13 @@ const Business: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section (image de fond + overlay) */}
-      <section className="relative py-20 overflow-hidden">
-        {/* IMAGE DE FOND */}
-        <div className="absolute inset-0 -z-10">
-          <picture>
-            <source srcSet="/images/entreprises.avif" type="image/avif" />
-            <source srcSet="/images/entreprises.webp" type="image/webp" />
-            <img
-              src="/images/entreprises.jpg"
-              alt=""
-              aria-hidden="true"
-              className="h-full w-full object-cover"
-              style={{ objectPosition: 'center 35%' }}
-              loading="eager"
-              decoding="async"
-            />
-          </picture>
-        </div>
+      {/* Hero (image locale) */}
+      <section
+        className="relative py-20 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: 'url(/images/entreprises.jpg)' }}
+      >
+        <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
-        {/* OVERLAY */}
-        <div className="absolute inset-0 -z-10 bg-black/40" aria-hidden="true"></div>
-
-        {/* CONTENU TEXTE (inchangé) */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Building2 className="w-16 h-16 text-white/80 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -283,7 +268,7 @@ const Business: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="py-20 bg-gradient-to-r from-rosa-honey to-rosa-light-honey">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
