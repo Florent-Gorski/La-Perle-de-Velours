@@ -96,10 +96,10 @@ const Pricing: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* Hero (image locale) */}
+      {/* Hero (image locale, centré) */}
       <section
         className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/tarifs.jpg)' }}
+        style={{ backgroundImage: 'url(/images/tarifs.jpg)', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 

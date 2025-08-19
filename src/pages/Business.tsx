@@ -77,10 +77,10 @@ const Business: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero (image locale) */}
+      {/* Hero (image locale, centré) */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/entreprises.jpg)' }}
+        style={{ backgroundImage: 'url(/images/entreprises.jpg)', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
@@ -255,7 +255,7 @@ const Business: React.FC = () =>
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-rosa-soft-beige p-8 rounded-2xl hover:bg-rosa-beige transition-colors duration-300"
+                className="bg-rosa-soft-beige p-8 rounded-2xl hover:bg-rosa-beige transition-colors durée-300"
               >
                 <div className="mb-6">
                   <h4 className="font-bold text-gray-900 mb-2">{testimonial.company}</h4>

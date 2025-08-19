@@ -52,10 +52,10 @@ const Services: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-rosa-ivory">
-      {/* Hero (image locale) */}
+      {/* Hero (image locale, centré) */}
       <section
         className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/services.jpg)' }}
+        style={{ backgroundImage: 'url(/images/services.jpg)', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
@@ -70,7 +70,7 @@ const Services: React.FC = () =>
         </div>
       </section>
 
-      {/* … tout le reste du fichier est inchangé … */}
+      {/* Contenu inchangé */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-12 md:space-y-20">

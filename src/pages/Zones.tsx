@@ -7,10 +7,10 @@ const Zones: React.FC = () =>
 {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero (image locale) */}
+      {/* Hero (image locale, centré) */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/zones.jpg)' }}
+        style={{ backgroundImage: 'url(/images/zones.jpg)', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
 
