@@ -1,6 +1,7 @@
 {
   "name": "La Perle de Velours",
-  "short_name": "PerleVelours",
+  "short_name": "La Perle de Velours",
+  "description": "Beauté & Bien-être à domicile à Lausanne et dans le Canton de Vaud",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FDFBF7",
@@ -17,14 +18,10 @@
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
