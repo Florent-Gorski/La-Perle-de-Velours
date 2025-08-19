@@ -1,7 +1,10 @@
 import { NavLink, Link } from "react-router-dom";
 import { Phone } from "lucide-react";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import React = require("react");
 
-export default function Header() {
+export default function Header()
+{
   const links = [
     { to: "/", label: "Accueil" },
     { to: "/prestations", label: "Prestations" },
@@ -15,9 +18,9 @@ export default function Header() {
     <header
       className="
         sticky top-0 z-50
-        bg-white/95 dark:bg-neutral-900/95
-        backdrop-blur border-b border-black/10
-        shadow-[0_6px_20px_rgba(0,0,0,0.06)]
+        bg-white/90 backdrop-blur
+        border-b border-black/10
+        shadow-sm
       "
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -25,13 +28,11 @@ export default function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <img
-              src="/logo.svg"
+              src="/logo.png"
               alt="La Perle de Velours"
               className="h-8 w-8 rounded-full ring-1 ring-black/10"
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onError={(e: any) => (e.currentTarget.style.display = "none")}
             />
-            <span className="font-playfair text-lg font-bold text-neutral-900 dark:text-neutral-100">
+            <span className="font-playfair text-xl font-semibold text-neutral-900">
               La Perle de Velours
             </span>
           </Link>
@@ -44,10 +45,8 @@ export default function Header() {
                 to={item.to}
                 className={({ isActive }) =>
                   `px-3 py-2 rounded-lg font-medium tracking-wide transition-colors
-                   text-neutral-700 dark:text-neutral-200
-                   hover:text-[#CDA434] hover:bg-black/[0.05]
-                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA434]/60
-                   ${isActive ? "text-[#CDA434] underline decoration-2 underline-offset-8" : ""}`
+                   text-neutral-800 hover:text-[#CDA434]
+                   ${isActive ? "text-[#CDA434] underline decoration-[#CDA434] decoration-2 underline-offset-8" : ""}`
                 }
               >
                 {item.label}
@@ -59,18 +58,17 @@ export default function Header() {
               to="/contact"
               className="ml-3 inline-flex items-center gap-2 rounded-xl px-4 py-2.5
                          bg-[#CDA434] text-white font-semibold
-                         shadow hover:shadow-lg transition-all"
+                         shadow hover:shadow-md transition-all"
             >
               <Phone className="h-4 w-4" />
               Réserver
             </Link>
           </div>
 
-          {/* Mobile button (placeholder) */}
+          {/* Mobile button */}
           <button
             className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg
-                       border border-black/10 hover:bg-black/[0.05]
-                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CDA434]"
+                       border border-black/10 hover:bg-black/[0.05]"
             aria-label="Ouvrir le menu"
             onClick={() => alert("Menu mobile à brancher si besoin")}
           >
