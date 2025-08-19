@@ -4,10 +4,8 @@ import path from 'node:path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // ⚡ important pour Netlify : sert les assets depuis la racine
+  base: '/',
   resolve: {
-    alias: {
-      '@': path.resolve(process.cwd(), 'src'), // ✅ alias '@' -> src
-    },
+    alias: { '@': path.resolve(process.cwd(), 'src') },
   },
 })
