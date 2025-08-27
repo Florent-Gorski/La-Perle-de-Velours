@@ -32,12 +32,12 @@ const CTASticky: React.FC = () => {
       </a>
       <a
         href="tel:+41123456789"
-        className="bg-rosa-honey text-white p-3 md:p-4 rounded-full shadow-lg hover:bg-rosa-light-honey transition-all duration-300 hover:scale-110 hover:shadow-xl min-h-[56px] min-w-[56px] flex items-center justify-center"
         className="bg-perle-honey text-white p-3 md:p-4 rounded-full shadow-lg hover:bg-perle-light-honey transition-all duration-300 hover:scale-110 hover:shadow-xl min-h-[56px] min-w-[56px] flex items-center justify-center"
         aria-label="Téléphoner"
       >
         <Phone className="w-6 h-6 md:w-7 md:h-7" />
       </a>
+
     </div>
   );
 };

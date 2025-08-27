@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               </div>
             </Link>
             <p className="text-perle-ivory/80 font-inter mb-4 max-w-md leading-relaxed">
-              Découvrez l'excellence des soins de beauté et bien-être dans l'intimité de votre domicile. 
+              Découvrez l'excellence des soins de beauté et bien-être dans l'intimité de votre domicile.
               Une expérience premium personnalisée par une esthéticienne diplômée.
             </p>
           </div>
@@ -37,11 +37,11 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-perle-honey" />
-                <a href="tel:+41123456789" className="text-perle-ivory/70 font-inter hover:text-perle-honey transition-colors">+41 12 345 67 89</a>
+                <a href="tel:+41123456789" className="text-perle-ivory/70 font-inter hover:text-perle-honey transition-colors">+41 00 000 00 00</a>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="w-4 h-4 text-perle-honey" />
-                <a href="mailto:perledevelours@gmail.com" className="text-perle-ivory/70 font-inter hover:text-perle-honey transition-colors">perledevelours@gmail.com</a>
+                <a href="mailto:perledevelours@gmail.com" className="text-perle-ivory/70 font-inter hover:text-perle-honey transition-colors">laperledevelours@gmail.com</a>
               </li>
               <li className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-perle-honey" />

@@ -34,7 +34,7 @@ const Header: React.FC = () => {
       <div className="mx-auto max-w-7xl px-4 h-16 md:h-20 flex items-center justify-between">
         {/* Bloc logo */}
         <Link to="/" className="flex items-center gap-3 md:gap-4 shrink-0 group">
-          <img 
+          <img
             src="/logo-PV.png"
             alt="PV – Perle de Velours"
             className="h-8 w-auto md:h-10 select-none transition-all duration-300 group-hover:scale-110"
@@ -105,7 +105,7 @@ const Header: React.FC = () => {
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`block py-3 px-4 text-lg font-inter font-medium rounded-lg transition-all duration-300 min-h-[48px] flex items-center ${
+                  className={`block py-3 px-4 text-lg font-inter font-medium rounded-lg transition-all duration-300 min-h-[48px] items-center ${
                     isActive(item.href)
                       ? 'text-[#D4AF37] bg-[#D4AF37]/10'
                       : 'text-[#2C2C2C] hover:text-[#D4AF37] hover:bg-[#F7F4ED]'
@@ -121,7 +121,7 @@ const Header: React.FC = () => {
               <a
                 href="/contact"
                 onClick={() => setIsMenuOpen(false)}
-                className="block bg-[#D4AF37] text-white px-6 py-3 rounded-full text-lg font-inter font-medium hover:bg-[#E6C547] transition-all duration-300 text-center min-h-[48px] flex items-center justify-center"
+                className="block bg-[#D4AF37] text-white px-6 py-3 rounded-full text-lg font-inter font-medium hover:bg-[#E6C547] transition-all duration-300 text-center min-h-[48px] items-center justify-center"
               >
                 Réserver maintenant
               </a>

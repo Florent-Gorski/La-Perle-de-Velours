@@ -72,7 +72,7 @@ const Contact: React.FC = () =>
             Réserver Votre Service Beauté
           </h1>
           <p className="text-base md:text-xl text-white/95 max-w-3xl mx-auto px-4">
-            Manucure, esthétique, massage à domicile — Lausanne & Canton de Vaud. Réponse rapide par téléphone ou WhatsApp.
+            Manucure, esthétique, massage à domicile — Lausanne & Canton de Vaud. Réponse rapide par téléphone .
           </p>
         </div>
       </section>
@@ -115,8 +115,8 @@ const Contact: React.FC = () =>
                 Email
               </h2>
               <p className="font-inter text-rosa-warm-gray/80">
-                <a href="mailto:contact@maisonbeautemobile.ch" className="text-rosa-honey hover:underline">
-                  contact@maisonbeautemobile.ch
+                <a href="mailto:laperledevelours@gmail.com" className="text-rosa-honey hover:underline">
+                  laperledevelours@gmail.com
                 </a>
               </p>
             </div>
