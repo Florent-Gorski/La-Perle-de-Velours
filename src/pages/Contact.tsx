@@ -9,7 +9,7 @@ export default function Contact()
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // Simule l’envoi
+      // Simule l’envoi (remplace par ton appel API / Netlify Function si besoin)
       await new Promise((resolve) => setTimeout(resolve, 2000));
       alert("Demande envoyée avec succès !");
     } catch (error) {
@@ -21,7 +21,8 @@ export default function Contact()
   };
 
   return (
-    <div className="min-h-screen bg-rosa-ivory pb-28">
+    // Padding bas augmenté pour laisser respirer le contenu sous la barre sticky mobile
+    <div className="min-h-screen bg-rosa-ivory pb-36 sm:pb-28">
       <div className="max-w-4xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-playfair font-bold text-center text-perle-night mb-10">
           Demande de réservation
@@ -130,16 +131,29 @@ export default function Contact()
             ></textarea>
           </div>
 
-          {/* Bouton d’envoi */}
-          <div className="relative z-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full sm:w-auto bg-rosa-honey text-white px-6 py-3 rounded-full font-inter font-medium hover:bg-rosa-light-honey transition-colors min-h-[44px] disabled:opacity-60"
-            >
-              {isSubmitting ? "Envoi…" : "Envoyer la demande"}
-            </button>
+          {/* Barre d’action : sticky sur mobile, classique en ≥ sm */}
+          <div
+            className="
+              fixed inset-x-0 bottom-0 z-30 sm:static
+              bg-rosa-ivory/80 backdrop-blur supports-[backdrop-filter]:backdrop-blur
+              border-t border-rosa-honey/20
+              px-6 py-3 sm:p-0
+              pb-[env(safe-area-inset-bottom)]
+            "
+          >
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto bg-rosa-honey text-white px-6 py-3 rounded-full font-inter font-medium hover:bg-rosa-light-honey transition-colors min-h-[44px] disabled:opacity-60 shadow-sm"
+                >
+                  {isSubmitting ? "Envoi…" : "Envoyer la demande"}
+                </button>
+              </div>
+            </div>
           </div>
+          {/* /Barre d’action */}
         </form>
       </div>
     </div>
