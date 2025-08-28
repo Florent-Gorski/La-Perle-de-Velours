@@ -112,10 +112,9 @@ const Contact: React.FC = () =>
     fd.append("date", formData.preferredDate);
     fd.append("heure", formData.preferredTime);
 
-    // Lecture sûre de l’URL d’Apps Script (évite 'never')
+    // Lecture sûre de l’URL d’Apps Script
     const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
-
-    const fallbackUrl = ""; // tu peux mettre temporairement une URL '/exec' ici si besoin
+    const fallbackUrl = ""; // (optionnel dev) mettre une URL /exec ici si besoin ponctuel
     const scriptURL = envUrl || fallbackUrl;
 
     if (!scriptURL) {
