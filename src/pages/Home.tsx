@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Star, Clock, Shield, Heart, Gem } from 'lucide-react';
+import { Sparkles, Star, Shield, Heart, Gem } from 'lucide-react';
 import HeroCarousel from '../components/HeroCarousel';
 
 const Home: React.FC = () => {
@@ -56,7 +56,7 @@ const Home: React.FC = () => {
               L'excellence du soin à domicile dans une approche premium et personnalisée
             </p>
           </div>
-          
+
           <div className="space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
             {features.map((feature, index) => (
               <div
@@ -89,24 +89,24 @@ const Home: React.FC = () => {
 
           <div className="space-y-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:space-y-0">
             {[
-              { 
-                name: 'Manucure Premium à Domicile Genève', 
-                image: 'https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg', 
-                price: 'dès 65 CHF', 
+              {
+                name: 'Manucure Premium à Domicile Genève',
+                image: 'https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg',
+                price: 'dès 65 CHF',
                 description: 'Manucure gel, vernis semi-permanent, soins cuticules. Service à domicile Genève et région.',
                 link: '/prestations#manucure'
               },
-              { 
-                name: 'Soins Visage Premium à Domicile', 
-                image: 'https://images.pexels.com/photos/3985360/pexels-photo-3985360.jpeg', 
-                price: 'dès 95 CHF', 
+              {
+                name: 'Soins Visage Premium à Domicile',
+                image: 'https://images.pexels.com/photos/3985360/pexels-photo-3985360.jpeg',
+                price: 'dès 95 CHF',
                 description: 'Nettoyage de peau, hydratation, anti-âge. Produits haut de gamme, service à domicile.',
                 link: '/prestations#soins-visage'
               },
-              { 
-                name: 'Massage Bien-être à Domicile Suisse', 
-                image: 'https://images.pexels.com/photos/3985327/pexels-photo-3985327.jpeg', 
-                price: 'dès 120 CHF', 
+              {
+                name: 'Massage Bien-être à Domicile Suisse',
+                image: 'https://images.pexels.com/photos/3985327/pexels-photo-3985327.jpeg',
+                price: 'dès 120 CHF',
                 description: 'Massage relaxant, suédois, réflexologie. Détente absolue dans votre domicile.',
                 link: '/prestations#massage'
               }
@@ -129,7 +129,7 @@ const Home: React.FC = () => {
                   <p className="font-inter text-perle-warm-gray/70 text-sm mb-3 leading-relaxed">{service.description}</p>
                   <div className="flex items-center justify-between">
                     <p className="text-perle-honey font-inter font-semibold text-base md:text-lg">{service.price}</p>
-                    <a 
+                    <a
                       href={service.link}
                       className="text-perle-honey hover:text-perle-light-honey font-inter text-sm font-medium transition-colors"
                     >

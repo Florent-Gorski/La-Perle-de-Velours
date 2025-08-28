@@ -5,15 +5,16 @@ export default {
     extend: {
       colors: {
         'perle': {
-          'ivory': '#FDFBF7',
-          'honey': '#D4AF37',
-          'beige': '#F0EDE6',
-          'warm-gray': '#2C2C2C',
-          'light-honey': '#E6C547',
-          'soft-beige': '#F7F4ED',
-          'olive': '#8A8F6A',
-          'terracotta': '#C97A5A',
-          'sand': '#E9E1D9'
+          // --- NOUVELLE PALETTE DE COULEURS ---
+          'ivory': '#F9F6F2',          // Un blanc cassé très clair et doux pour les fonds principaux
+          'honey': '#B99286',          // La couleur principale, un bois de rose / terre cuite doux
+          'beige': '#EAE2D9',          // Un beige doux pour les fonds secondaires
+          'warm-gray': '#4E403B',      // Un marron foncé pour le texte, plus doux que le noir
+          'light-honey': '#D1B3A9',    // Une version plus claire de la couleur principale pour les survols (hover)
+          'soft-beige': '#F2ECE6',     // Un beige très subtil, proche du fond principal
+          'olive': '#A0968C',          // Un gris-vert désaturé pour les accents secondaires
+          'terracotta': '#C97A5A',     // Conservé pour d'éventuels accents plus vifs
+          'sand': '#E9E1D9'           // Conservé pour les nuances de fond
         }
       },
       fontFamily: {
@@ -47,8 +48,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 5px rgba(201, 166, 107, 0.3)' },
-          '100%': { boxShadow: '0 0 20px rgba(201, 166, 107, 0.6)' },
+          '0%': { boxShadow: '0 0 5px rgba(185, 146, 134, 0.3)' }, // Mise à jour de la couleur du halo
+          '100%': { boxShadow: '0 0 20px rgba(185, 146, 134, 0.6)' }, // Mise à jour de la couleur du halo
         },
       },
     },

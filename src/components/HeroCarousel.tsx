@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const HeroCarousel: React.FC = () => {
+const HeroCarousel: React.FC = () =>
+{
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // --- MODIFICATION ICI ---
+  // On remplace les URLs Pexels par les chemins vers vos images locales
+  // Assurez-vous que ces images se trouvent bien dans votre dossier `public/images/`
   const slides = [
     {
       id: 1,
-      image: 'https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg',
+      image: '/images/hero-1.jpg', // Exemple, à adapter
       alt: 'Manucure premium avec plateau en laiton',
       title: 'Manucure Premium',
       subtitle: 'L\'art du détail à domicile'
     },
     {
       id: 2,
-      image: 'https://images.pexels.com/photos/3985327/pexels-photo-3985327.jpeg',
+      image: '/images/hero-2.jpg', // Exemple, à adapter
       alt: 'Massage bien-être dans un cadre lumineux',
       title: 'Massage Bien-être',
       subtitle: 'Détente absolue chez vous'
     },
     {
       id: 3,
-      image: 'https://images.pexels.com/photos/3985360/pexels-photo-3985360.jpeg',
+      image: '/images/hero-3.jpg', // Votre nouvelle image
       alt: 'Soins visage dans une ambiance spa',
       title: 'Soins Visage',
       subtitle: 'Éclat naturel révélé'
@@ -29,22 +33,27 @@ const HeroCarousel: React.FC = () => {
   ];
 
   // Auto-advance slides
-  useEffect(() => {
-    const timer = setInterval(() => {
+  useEffect(() =>
+  {
+    const timer = setInterval(() =>
+    {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  const goToSlide = (index: number) => {
+  const goToSlide = (index: number) =>
+  {
     setCurrentSlide(index);
   };
 
-  const goToPrevious = () => {
+  const goToPrevious = () =>
+  {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const goToNext = () => {
+  const goToNext = () =>
+  {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
@@ -55,9 +64,8 @@ const HeroCarousel: React.FC = () => {
         {slides.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
           >
             <img
               src={slide.image}
@@ -155,11 +163,10 @@ const HeroCarousel: React.FC = () => {
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-perle-honey/50 min-h-[44px] min-w-[44px] flex items-center justify-center ${
-              index === currentSlide
+            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-perle-honey/50 min-h-[44px] min-w-[44px] flex items-center justify-center ${index === currentSlide
                 ? 'bg-perle-honey shadow-lg scale-125'
                 : 'bg-perle-ivory/60 hover:bg-perle-ivory'
-            }`}
+              }`}
             aria-label={`Aller à l'image ${index + 1}`}
           />
         ))}

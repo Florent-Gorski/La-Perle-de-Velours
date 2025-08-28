@@ -95,7 +95,7 @@ const Pricing: React.FC = () =>
   ];
 
   return (
-    <div className="min-h-screen bg-rosa-ivory">
+    <div className="min-h-screen bg-perle-ivory">
       {/* Hero (image locale, centré) */}
       <section
         className="relative py-12 md:py-20 bg-cover bg-center bg-no-repeat"
@@ -117,20 +117,20 @@ const Pricing: React.FC = () =>
       {/* Informations Tarifs */}
       <section className="py-8 md:py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-rosa-soft-beige rounded-2xl p-6 md:p-8">
-            <h2 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray mb-4 text-center">Informations Tarifs</h2>
+          <div className="bg-perle-soft-beige rounded-2xl p-6 md:p-8">
+            <h2 className="text-xl md:text-2xl font-playfair font-bold text-perle-warm-gray mb-4 text-center">Informations Tarifs</h2>
             <div className="space-y-4 md:grid md:grid-cols-3 md:gap-6 md:space-y-0 text-center">
               <div>
-                <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Frais de déplacement</h3>
-                <p className="text-rosa-warm-gray/70 font-inter text-sm">Variables selon zone Genève (voir Zones)</p>
+                <h3 className="font-inter font-semibold text-perle-warm-gray mb-2">Frais de déplacement</h3>
+                <p className="text-perle-warm-gray/70 font-inter text-sm">Variables selon zone (voir Zones)</p>
               </div>
               <div>
-                <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Paiement accepté</h3>
-                <p className="text-rosa-warm-gray/70 font-inter text-sm">Twint, carte bancaire, espèces</p>
+                <h3 className="font-inter font-semibold text-perle-warm-gray mb-2">Paiement accepté</h3>
+                <p className="text-perle-warm-gray/70 font-inter text-sm">Twint, carte bancaire, espèces</p>
               </div>
               <div>
-                <h3 className="font-inter font-semibold text-rosa-warm-gray mb-2">Annulation</h3>
-                <p className="text-rosa-warm-gray/70 font-inter text-sm">Gratuite jusqu'à 24h avant RDV</p>
+                <h3 className="font-inter font-semibold text-perle-warm-gray mb-2">Annulation</h3>
+                <p className="text-perle-warm-gray/70 font-inter text-sm">Gratuite jusqu'à 24h avant RDV</p>
               </div>
             </div>
           </div>
@@ -141,10 +141,10 @@ const Pricing: React.FC = () =>
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl md:3xl lg:text-4xl font-playfair font-bold text-rosa-warm-gray mb-4">
+            <h2 className="text-2xl md:3xl lg:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
               Forfaits Avantageux
             </h2>
-            <p className="text-base md:text-xl font-inter text-rosa-warm-gray/70 px-4">
+            <p className="text-base md:text-xl font-inter text-perle-warm-gray/70 px-4">
               Combinez plusieurs services et économisez
             </p>
           </div>
@@ -153,29 +153,29 @@ const Pricing: React.FC = () =>
             {packages.map((pkg, index) => (
               <div
                 key={index}
-                className={`relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${pkg.popular ? 'ring-2 ring-rosa-honey md:scale-105' : ''
+                className={`relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${pkg.popular ? 'ring-2 ring-perle-honey md:scale-105' : ''
                   }`}
               >
                 {pkg.popular && (
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-rosa-honey text-white px-4 py-2 rounded-b-lg text-sm font-inter font-medium">
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 bg-perle-honey text-white px-4 py-2 rounded-b-lg text-sm font-inter font-medium">
                     Le plus populaire
                   </div>
                 )}
 
                 <div className="p-6 md:p-8">
-                  <div className="flex justify-center mb-4 text-rosa-honey">
+                  <div className="flex justify-center mb-4 text-perle-honey">
                     {pkg.icon}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-playfair font-bold text-rosa-warm-gray text-center mb-2">{pkg.name}</h3>
-                  <p className="text-rosa-warm-gray/70 font-inter text-center mb-6 text-sm md:text-base">{pkg.description}</p>
+                  <h3 className="text-xl md:text-2xl font-playfair font-bold text-perle-warm-gray text-center mb-2">{pkg.name}</h3>
+                  <p className="text-perle-warm-gray/70 font-inter text-center mb-6 text-sm md:text-base">{pkg.description}</p>
 
                   <div className="text-center mb-6">
                     <div className="flex items-center justify-center space-x-2">
-                      <span className="text-3xl md:text-4xl font-playfair font-bold text-rosa-warm-gray">{pkg.price}</span>
-                      <span className="text-lg md:text-xl text-rosa-warm-gray/70 font-inter">CHF</span>
+                      <span className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray">{pkg.price}</span>
+                      <span className="text-lg md:text-xl text-perle-warm-gray/70 font-inter">CHF</span>
                     </div>
                     <div className="flex items-center justify-center space-x-2 mt-1">
-                      <span className="text-base md:text-lg text-rosa-warm-gray/40 line-through font-inter">{pkg.originalPrice} CHF</span>
+                      <span className="text-base md:text-lg text-perle-warm-gray/40 line-through font-inter">{pkg.originalPrice} CHF</span>
                       <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-inter font-medium">
                         -{pkg.originalPrice - pkg.price} CHF
                       </span>
@@ -186,7 +186,7 @@ const Pricing: React.FC = () =>
                     {pkg.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center space-x-3">
                         <Check className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-rosa-warm-gray/70 font-inter text-sm md:text-base">{feature}</span>
+                        <span className="text-perle-warm-gray/70 font-inter text-sm md:text-base">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -194,8 +194,8 @@ const Pricing: React.FC = () =>
                   <a
                     href="/contact"
                     className={`w-full flex items-center justify-center text-center py-4 px-6 rounded-full font-inter font-medium transition-colors min-h-[48px] ${pkg.popular
-                        ? 'bg-rosa-honey text-white hover:bg-rosa-light-honey'
-                        : 'bg-rosa-soft-beige text-rosa-warm-gray hover:bg-rosa-beige'
+                      ? 'bg-perle-honey text-white hover:bg-perle-light-honey'
+                      : 'bg-perle-soft-beige text-perle-warm-gray hover:bg-perle-beige'
                       }`}
                   >
                     Réserver
@@ -211,18 +211,18 @@ const Pricing: React.FC = () =>
       <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-rosa-warm-gray mb-4">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
               Prestations Individuelles
             </h2>
-            <p className="text-base md:text-xl font-inter text-rosa-warm-gray/70 px-4">
+            <p className="text-base md:text-xl font-inter text-perle-warm-gray/70 px-4">
               Choisissez exactement ce dont vous avez besoin
             </p>
           </div>
 
           <div className="space-y-8 md:space-y-12">
             {pricingData.map((category, index) => (
-              <div key={index} className="bg-rosa-soft-beige rounded-3xl overflow-hidden">
-                <div className="bg-gradient-to-r from-rosa-honey to-rosa-light-honey p-4 md:p-6">
+              <div key={index} className="bg-perle-soft-beige rounded-3xl overflow-hidden">
+                <div className="bg-gradient-to-r from-perle-honey to-perle-light-honey p-4 md:p-6">
                   <div className="flex items-center justify-center space-x-3">
                     <span className="text-2xl md:text-3xl">{category.icon}</span>
                     <h3 className="text-xl md:text-2xl font-playfair font-bold text-white">{category.category}</h3>
@@ -234,16 +234,16 @@ const Pricing: React.FC = () =>
                     {category.services.map((service, serviceIndex) => (
                       <div
                         key={serviceIndex}
-                        className="bg-white rounded-xl p-4 md:p-6 shadow-sm hover:shadow-md hover:bg-rosa-ivory/50 transition-all duration-300"
+                        className="bg-white rounded-xl p-4 md:p-6 shadow-sm hover:shadow-md hover:bg-perle-ivory/50 transition-all duration-300"
                       >
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
-                          <h4 className="font-playfair font-bold text-rosa-warm-gray text-sm md:text-base">{service.name}</h4>
+                          <h4 className="font-playfair font-bold text-perle-warm-gray text-sm md:text-base">{service.name}</h4>
                           <div className="text-left sm:text-right">
-                            <div className="text-lg md:text-xl font-playfair font-bold text-rosa-honey">{service.price} CHF</div>
-                            <div className="text-xs md:text-sm text-rosa-warm-gray/60 font-inter">{service.duration}</div>
+                            <div className="text-lg md:text-xl font-playfair font-bold text-perle-honey">{service.price} CHF</div>
+                            <div className="text-xs md:text-sm text-perle-warm-gray/60 font-inter">{service.duration}</div>
                           </div>
                         </div>
-                        <p className="text-rosa-warm-gray/70 font-inter text-xs md:text-sm leading-relaxed">{service.description}</p>
+                        <p className="text-perle-warm-gray/70 font-inter text-xs md:text-sm leading-relaxed">{service.description}</p>
                       </div>
                     ))}
                   </div>
@@ -255,18 +255,18 @@ const Pricing: React.FC = () =>
       </section>
 
       {/* CTA */}
-      <section className="py-12 md:py-20 bg-gradient-to-r from-rosa-honey to-rosa-light-honey">
+      <section className="py-12 md:py-20 bg-gradient-to-r from-perle-honey to-perle-light-honey">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-playfair font-bold text-white mb-4 md:mb-6">
             Prête pour votre moment beauté ?
           </h2>
           <p className="text-base md:text-xl text-white/90 mb-6 md:mb-8 px-4">
-            Réservez votre service beauté à domicile Genève et région
+            Réservez votre service beauté à domicile .
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center">
             <a
               href="/contact"
-              className="bg-white text-rosa-honey px-6 py-4 md:px-8 md:py-4 rounded-full text-base md:text-lg font-inter font-medium hover:bg-rosa-ivory transition-all duration-300 md:hover:scale-105 min-h-[48px] flex items-center justify-center"
+              className="bg-white text-perle-honey px-6 py-4 md:px-8 md:py-4 rounded-full text-base md:text-lg font-inter font-medium hover:bg-perle-ivory transition-all duration-300 md:hover:scale-105 min-h-[48px] flex items-center justify-center"
             >
               Réserver maintenant
             </a>
