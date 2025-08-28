@@ -1,6 +1,23 @@
-// src/pages/Contact.tsx (ou le même chemin que ton projet)
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
+
+/** Typage explicite du formulaire (évite les 'never') */
+type ContactForm = {
+  name: string;
+  email: string;
+  phoneCode: string;
+  phone: string;
+  service: string;
+  message: string;
+  preferredDate: string;
+  preferredTime: string;
+};
+
+/** Normalise une valeur potentiellement inconnue en string sûr */
+function toTrimmedString(v: unknown): string
+{
+  return typeof v === "string" ? v.trim() : "";
+}
 
 function todayLocalISO(): string
 {
@@ -25,7 +42,7 @@ const Contact: React.FC = () =>
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
     phoneCode: "+41",
@@ -79,7 +96,6 @@ const Contact: React.FC = () =>
     setSubmitStatus("idle");
     setErrorMessage("");
 
-    // Validation basique
     if (!formData.name || !formData.email || !formData.phone || !formData.service) {
       setSubmitStatus("error");
       setErrorMessage("Veuillez remplir tous les champs obligatoires.");
@@ -87,7 +103,6 @@ const Contact: React.FC = () =>
       return;
     }
 
-    // Prépare les données à envoyer (les noms de champs doivent coller à ton Apps Script)
     const fd = new FormData();
     fd.append("nom", formData.name.trim());
     fd.append("email", formData.email.trim());
@@ -97,13 +112,13 @@ const Contact: React.FC = () =>
     fd.append("date", formData.preferredDate);
     fd.append("heure", formData.preferredTime);
 
-    // 1) On lit l’URL depuis Vite. 2) Optionnel: petit fallback local si besoin.
-    const envUrl = import.meta.env.VITE_GAS_URL as string | undefined;
-    const fallbackUrl = ""; // tu peux, PENDANT TES TESTS, mettre ici une URL /exec
-    const scriptURL = (envUrl && envUrl.trim()) || (fallbackUrl && fallbackUrl.trim());
+    // Lecture sûre de l’URL d’Apps Script (évite 'never')
+    const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
+
+    const fallbackUrl = ""; // tu peux mettre temporairement une URL '/exec' ici si besoin
+    const scriptURL = envUrl || fallbackUrl;
 
     if (!scriptURL) {
-      // On n'interrompt pas brutalement l'app : on affiche une erreur claire à l’utilisateur
       setSubmitStatus("error");
       setErrorMessage(
         "La passerelle de soumission n’est pas configurée. Ajoutez VITE_GAS_URL dans votre .env."
@@ -113,11 +128,9 @@ const Contact: React.FC = () =>
     }
 
     try {
-      // Timeout de sécurité (30s)
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      // IMPORTANT: no-cors pour éviter CORS; on ne lira pas la réponse
       await fetch(scriptURL, {
         method: "POST",
         body: fd,
@@ -127,7 +140,6 @@ const Contact: React.FC = () =>
 
       clearTimeout(timeoutId);
 
-      // Si pas d’exception => on considère l’envoi OK
       setSubmitStatus("success");
       setFormData({
         name: "",
@@ -140,8 +152,6 @@ const Contact: React.FC = () =>
         preferredTime: "",
       });
       setSelectedForfait("");
-
-      // On masque l’alerte après 5s
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
       console.error("Erreur lors de la soumission du formulaire:", error);
@@ -166,7 +176,6 @@ const Contact: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-perle-ivory">
-      {/* Hero Section */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/images/contact.jpg)", backgroundPosition: "center 30%" }}
@@ -182,11 +191,9 @@ const Contact: React.FC = () =>
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-5 lg:gap-12">
-            {/* Contact Info Column */}
             <div className="lg:col-span-2 mb-12 lg:mb-0">
               <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">
                 Informations
@@ -221,7 +228,6 @@ const Contact: React.FC = () =>
               </div>
             </div>
 
-            {/* Form Column */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
                 <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">
