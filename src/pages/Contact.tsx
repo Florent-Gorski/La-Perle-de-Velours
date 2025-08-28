@@ -1,10 +1,12 @@
+// src/pages/Contact.tsx (ou le même chemin que ton projet)
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 
-function todayLocalISO(): string {
+function todayLocalISO(): string
+{
   const d = new Date();
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-  return d.toISOString().split('T')[0];
+  return d.toISOString().split("T")[0];
 }
 
 const countryCodes = [
@@ -16,7 +18,8 @@ const countryCodes = [
   { value: "+44", label: "🇬🇧 +44" },
 ];
 
-const Contact: React.FC = () => {
+const Contact: React.FC = () =>
+{
   const [selectedForfait, setSelectedForfait] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
@@ -34,13 +37,22 @@ const Contact: React.FC = () => {
   });
 
   const services = [
-    "Manucure", "Pédicure", "Soin du visage", "Massage", "Forfait Beauté",
-    "Forfait Détente", "Forfait Premium", "Prestation entreprise", "Autre",
+    "Manucure",
+    "Pédicure",
+    "Soin du visage",
+    "Massage",
+    "Forfait Beauté",
+    "Forfait Détente",
+    "Forfait Premium",
+    "Prestation entreprise",
+    "Autre",
   ];
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     if (!selectedForfait) return;
-    setFormData((prev) => {
+    setFormData((prev) =>
+    {
       const nextService = prev.service || selectedForfait;
       const line = `Forfait choisi : ${selectedForfait}`;
       const hasLine = prev.message.includes(line);
@@ -52,19 +64,22 @@ const Contact: React.FC = () => {
     });
   }, [selectedForfait]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) =>
+  {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
-  // ===== SOLUTION OPTIMISÉE AVEC GESTION D'ERREURS ROBUSTE =====
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) =>
+  {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
     setErrorMessage("");
 
-    // Validation côté client
+    // Validation basique
     if (!formData.name || !formData.email || !formData.phone || !formData.service) {
       setSubmitStatus("error");
       setErrorMessage("Veuillez remplir tous les champs obligatoires.");
@@ -72,44 +87,48 @@ const Contact: React.FC = () => {
       return;
     }
 
-    // Prépare les données du formulaire
-    const formDataToSend = new FormData();
-    formDataToSend.append("nom", formData.name.trim());
-    formDataToSend.append("email", formData.email.trim());
-    formDataToSend.append("telephone", `${formData.phoneCode} ${formData.phone.trim()}`);
-    formDataToSend.append("service", formData.service);
-    formDataToSend.append("message", formData.message.trim());
-    formDataToSend.append("date", formData.preferredDate);
-    formDataToSend.append("heure", formData.preferredTime);
+    // Prépare les données à envoyer (les noms de champs doivent coller à ton Apps Script)
+    const fd = new FormData();
+    fd.append("nom", formData.name.trim());
+    fd.append("email", formData.email.trim());
+    fd.append("telephone", `${formData.phoneCode} ${formData.phone.trim()}`);
+    fd.append("service", formData.service);
+    fd.append("message", formData.message.trim());
+    fd.append("date", formData.preferredDate);
+    fd.append("heure", formData.preferredTime);
 
-    // ⚠️ ATTENTION: URL à remplacer par votre script Google Apps Script déployé
-    // Pour créer/configurer votre script, suivez les étapes ci-dessous
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec';
+    // 1) On lit l’URL depuis Vite. 2) Optionnel: petit fallback local si besoin.
+    const envUrl = import.meta.env.VITE_GAS_URL as string | undefined;
+    const fallbackUrl = ""; // tu peux, PENDANT TES TESTS, mettre ici une URL /exec
+    const scriptURL = (envUrl && envUrl.trim()) || (fallbackUrl && fallbackUrl.trim());
+
+    if (!scriptURL) {
+      // On n'interrompt pas brutalement l'app : on affiche une erreur claire à l’utilisateur
+      setSubmitStatus("error");
+      setErrorMessage(
+        "La passerelle de soumission n’est pas configurée. Ajoutez VITE_GAS_URL dans votre .env."
+      );
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
-      // Vérification de l'URL avant envoi
-      if (scriptURL === 'https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec') {
-        throw new Error('URL du script Google Apps Script non configurée');
-      }
-
-      // Configuration de la requête avec timeout
+      // Timeout de sécurité (30s)
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 secondes timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      // Envoi de la requête (mode no-cors ne permet pas de lire la réponse)
+      // IMPORTANT: no-cors pour éviter CORS; on ne lira pas la réponse
       await fetch(scriptURL, {
-        method: 'POST',
-        body: formDataToSend,
-        mode: 'no-cors', // IMPORTANT: Contourne les problèmes CORS
+        method: "POST",
+        body: fd,
+        mode: "no-cors",
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
 
-      // Si aucune exception n'est levée, on considère que l'envoi a réussi
+      // Si pas d’exception => on considère l’envoi OK
       setSubmitStatus("success");
-
-      // Réinitialise le formulaire
       setFormData({
         name: "",
         email: "",
@@ -118,46 +137,39 @@ const Contact: React.FC = () => {
         service: "",
         message: "",
         preferredDate: "",
-        preferredTime: ""
+        preferredTime: "",
       });
       setSelectedForfait("");
 
-      // Message de succès automatiquement supprimé après 5 secondes
-      setTimeout(() => {
-        if (submitStatus === "success") {
-          setSubmitStatus("idle");
-        }
-      }, 5000);
-
+      // On masque l’alerte après 5s
+      setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (error) {
-      console.error('Erreur lors de la soumission du formulaire:', error);
-
-      // Gestion spécifique des types d'erreurs
+      console.error("Erreur lors de la soumission du formulaire:", error);
       if (error instanceof Error) {
-        if (error.name === 'AbortError') {
+        if (error.name === "AbortError") {
           setErrorMessage("La requête a pris trop de temps. Veuillez réessayer.");
-        } else if (error.message.includes('Failed to fetch')) {
+        } else if (error.message.includes("Failed to fetch")) {
           setErrorMessage("Problème de connexion. Vérifiez votre connexion internet et réessayez.");
         } else {
-          setErrorMessage("Une erreur technique est survenue. Contactez-nous directement si le problème persiste.");
+          setErrorMessage(
+            "Une erreur technique est survenue. Contactez-nous directement si le problème persiste."
+          );
         }
       } else {
         setErrorMessage("Une erreur inattendue est survenue.");
       }
-
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
-  // ===== FIN DE LA SOLUTION OPTIMISÉE =====
 
   return (
     <div className="min-h-screen bg-perle-ivory">
       {/* Hero Section */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/contact.jpg)', backgroundPosition: 'center 30%' }}
+        style={{ backgroundImage: "url(/images/contact.jpg)", backgroundPosition: "center 30%" }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -191,7 +203,14 @@ const Contact: React.FC = () => {
                     <div>
                       <h3 className="font-inter font-semibold text-perle-warm-gray">{item.title}</h3>
                       {item.href ? (
-                        <a href={item.href} target="_blank" rel="noopener noreferrer" className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors">{item.value}</a>
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors"
+                        >
+                          {item.value}
+                        </a>
                       ) : (
                         <p className="text-perle-warm-gray/80">{item.value}</p>
                       )}
@@ -205,7 +224,9 @@ const Contact: React.FC = () => {
             {/* Form Column */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-                <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">Demande de Réservation</h2>
+                <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">
+                  Demande de Réservation
+                </h2>
 
                 {submitStatus === "success" && (
                   <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl">
@@ -226,7 +247,9 @@ const Contact: React.FC = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Nom complet *</label>
+                      <label htmlFor="name" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
+                        Nom complet *
+                      </label>
                       <input
                         type="text"
                         id="name"
@@ -238,7 +261,9 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Téléphone *</label>
+                      <label htmlFor="phone" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
+                        Téléphone *
+                      </label>
                       <div className="flex">
                         <select
                           name="phoneCode"
@@ -247,8 +272,10 @@ const Contact: React.FC = () => {
                           className="px-3 py-3 border border-r-0 border-perle-beige/50 rounded-l-xl bg-gray-50 focus:ring-2 focus:ring-perle-honey/50 focus:border-perle-honey transition-colors"
                           aria-label="Indicatif téléphonique"
                         >
-                          {countryCodes.map(code => (
-                            <option key={code.value} value={code.value}>{code.label}</option>
+                          {countryCodes.map((code) => (
+                            <option key={code.value} value={code.value}>
+                              {code.label}
+                            </option>
                           ))}
                         </select>
                         <input
@@ -265,7 +292,9 @@ const Contact: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Email *</label>
+                    <label htmlFor="email" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
+                      Email *
+                    </label>
                     <input
                       type="email"
                       id="email"
@@ -277,7 +306,9 @@ const Contact: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="service" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Service souhaité *</label>
+                    <label htmlFor="service" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
+                      Service souhaité *
+                    </label>
                     <select
                       id="service"
                       name="service"
@@ -288,13 +319,20 @@ const Contact: React.FC = () => {
                     >
                       <option value="">Sélectionnez un service</option>
                       {services.map((service, idx) => (
-                        <option key={idx} value={service}>{service}</option>
+                        <option key={idx} value={service}>
+                          {service}
+                        </option>
                       ))}
                     </select>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="preferredDate" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Date souhaitée</label>
+                      <label
+                        htmlFor="preferredDate"
+                        className="block text-sm font-inter font-medium text-perle-warm-gray mb-2"
+                      >
+                        Date souhaitée
+                      </label>
                       <input
                         type="date"
                         id="preferredDate"
@@ -306,7 +344,12 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label htmlFor="preferredTime" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Heure souhaitée</label>
+                      <label
+                        htmlFor="preferredTime"
+                        className="block text-sm font-inter font-medium text-perle-warm-gray mb-2"
+                      >
+                        Heure souhaitée
+                      </label>
                       <input
                         type="time"
                         id="preferredTime"
@@ -318,7 +361,9 @@ const Contact: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">Message</label>
+                    <label htmlFor="message" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
+                      Message
+                    </label>
                     <textarea
                       id="message"
                       name="message"
