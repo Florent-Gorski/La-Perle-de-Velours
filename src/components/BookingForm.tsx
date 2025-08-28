@@ -59,7 +59,7 @@ export function BookingForm()
     setStatus({ message: '', type: '' });
 
     const formData = new FormData(event.currentTarget);
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzvhDBAwNnMR53paftupJRlpr0oAGAUl-QHOxFgmM4Njau_sxrKLGR4s5j4flgxumuHzQ/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzBtdtm2sJU3KZB3Hiqivz12xEpjO2VOQR6EwaH480ZTOsJE8T7tFpgL1f4XWKcGL4Avg/exec';
 
     try {
       const response = await fetch(scriptURL, {
