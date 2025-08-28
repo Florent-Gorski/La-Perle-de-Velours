@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+// AMÉLIORATION : Helper function pour obtenir la date d'aujourd'hui au format YYYY-MM-DD
+// Cela empêchera les utilisateurs de sélectionner une date passée dans le calendrier.
+const getTodaysDate = () =>
+{
+  const today = new Date();
+  // Ajuste pour le fuseau horaire local pour que la date soit correcte
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
+  return today.toISOString().split('T')[0];
+};
+
 const styles = {
   form: {
     display: 'flex',
@@ -7,6 +17,11 @@ const styles = {
     maxWidth: '500px',
     margin: '2rem auto',
     gap: '1rem',
+  },
+  label: {
+    fontWeight: 500,
+    fontSize: '0.9rem',
+    color: '#574131' // Une couleur qui s'accorde avec votre thème
   },
   input: {
     padding: '10px',
@@ -22,6 +37,7 @@ const styles = {
     color: 'white',
     fontSize: '1rem',
     cursor: 'pointer',
+    transition: 'opacity 0.3s ease',
   },
   statusMessage: {
     textAlign: 'center',
@@ -43,9 +59,7 @@ export function BookingForm()
     setStatus({ message: '', type: '' });
 
     const formData = new FormData(event.currentTarget);
-
-    // L'URL de votre script est maintenant intégrée ici
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyn37K2nyTbCmUyf2rhmhjmKfAP3VggGs_EP9PDb9WBN-m5uQBk2Hm8Lp4qBv3bu2xWjg/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbznM9DHRgNyoeiCm84c_vy1H8QGaNeeTkESnIhenJOhqoQsA4RgHXlyVlHTF5Wzoq41wQ/exec';
 
     try {
       const response = await fetch(scriptURL, {
@@ -62,6 +76,13 @@ export function BookingForm()
       if (data.result === 'success') {
         setStatus({ message: 'Merci ! Votre demande a bien été envoyée.', type: 'success' });
         (event.target as HTMLFormElement).reset();
+
+        // AMÉLIORATION : Le message de succès disparaît après 6 secondes.
+        setTimeout(() =>
+        {
+          setStatus({ message: '', type: '' });
+        }, 6000);
+
       } else {
         throw new Error(data.message || 'Une erreur est survenue lors du traitement.');
       }
@@ -78,19 +99,37 @@ export function BookingForm()
 
   return (
     <form onSubmit={handleSubmit} style={styles.form} name="booking-form">
-      <input type="text" name="nom" placeholder="Votre nom complet" required style={styles.input} />
-      <input type="email" name="email" placeholder="Votre adresse email" required style={styles.input} />
-      <input type="date" name="date" required style={styles.input} aria-label="Date souhaitée" />
-      <input type="time" name="heure" required style={styles.input} aria-label="Heure souhaitée" />
-      <textarea name="message" placeholder="Un message ? (Précisez le lieu du RDV, le soin désiré...)"
-        style={{ ...styles.input, minHeight: '100px' }}></textarea>
+      <div>
+        <label htmlFor="nom" style={styles.label}>Nom complet *</label>
+        <input type="text" id="nom" name="nom" required style={styles.input} />
+      </div>
+      <div>
+        <label htmlFor="email" style={styles.label}>Email *</label>
+        <input type="email" id="email" name="email" required style={styles.input} />
+      </div>
+      <div>
+        {/* AMÉLIORATION : Ajout du label pour l'accessibilité */}
+        <label htmlFor="date" style={styles.label}>Date souhaitée *</label>
+        {/* AMÉLIORATION : Ajout de min={getTodaysDate()} */}
+        <input type="date" id="date" name="date" required style={styles.input} min={getTodaysDate()} />
+      </div>
+      <div>
+        {/* AMÉLIORATION : Ajout du label pour l'accessibilité */}
+        <label htmlFor="heure" style={styles.label}>Heure souhaitée *</label>
+        <input type="time" id="heure" name="heure" required style={styles.input} />
+      </div>
+      <div>
+        <label htmlFor="message" style={styles.label}>Message (adresse, soin désiré...)</label>
+        <textarea id="message" name="message" rows={4}
+          style={{ ...styles.input, minHeight: '100px' }}></textarea>
+      </div>
 
-      <button type="submit" disabled={isLoading} style={styles.button}>
+      <button type="submit" disabled={isLoading} style={{ ...styles.button, opacity: isLoading ? 0.7 : 1 }}>
         {isLoading ? 'Envoi en cours...' : 'Envoyer la demande'}
       </button>
 
       {status.message && (
-        <p style={{ ...styles.statusMessage, color: status.type === 'success' ? 'green' : 'red' }}>
+        <p style={{ ...styles.statusMessage, color: status.type === 'success' ? '#16a34a' : '#dc2626' }}>
           {status.message}
         </p>
       )}
