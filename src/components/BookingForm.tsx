@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// Un peu de style basique pour le formulaire. Vous pouvez mettre ça dans votre fichier CSS.
 const styles = {
   form: {
     display: 'flex',
@@ -19,7 +18,7 @@ const styles = {
     padding: '12px',
     border: 'none',
     borderRadius: '4px',
-    backgroundColor: '#AD8B73', // Une couleur qui pourrait aller avec "La Perle de Velours"
+    backgroundColor: '#AD8B73',
     color: 'white',
     fontSize: '1rem',
     cursor: 'pointer',
@@ -29,7 +28,7 @@ const styles = {
     marginTop: '1rem',
     fontWeight: 500,
   }
-} as const; // CHANGEMENT 2: Ajout de "as const" pour rendre les types de style stricts et compatibles avec React.
+} as const;
 
 
 export function BookingForm()
@@ -45,7 +44,7 @@ export function BookingForm()
 
     const formData = new FormData(event.currentTarget);
 
-    // IMPORTANT: Remplacez cette URL par l'URL de VOTRE Web App Google Apps Script
+    // L'URL de votre script est maintenant intégrée ici
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyn37K2nyTbCmUyf2rhmhjmKfAP3VggGs_EP9PDb9WBN-m5uQBk2Hm8Lp4qBv3bu2xWjg/exec';
 
     try {
@@ -66,8 +65,7 @@ export function BookingForm()
       } else {
         throw new Error(data.message || 'Une erreur est survenue lors du traitement.');
       }
-    } catch (error) { // CHANGEMENT 1: On retire ": any"
-      // On vérifie que l'erreur est bien un objet de type Error avant d'accéder à .message
+    } catch (error) {
       if (error instanceof Error) {
         setStatus({ message: `Erreur : ${error.message}`, type: 'error' });
       } else {
@@ -84,7 +82,8 @@ export function BookingForm()
       <input type="email" name="email" placeholder="Votre adresse email" required style={styles.input} />
       <input type="date" name="date" required style={styles.input} aria-label="Date souhaitée" />
       <input type="time" name="heure" required style={styles.input} aria-label="Heure souhaitée" />
-      <textarea name="message" placeholder="Un message ? (Précisez le lieu du RDV, le soin désiré...)" style={{ ...styles.input, minHeight: '100px' }}></textarea>
+      <textarea name="message" placeholder="Un message ? (Précisez le lieu du RDV, le soin désiré...)"
+        style={{ ...styles.input, minHeight: '100px' }}></textarea>
 
       <button type="submit" disabled={isLoading} style={styles.button}>
         {isLoading ? 'Envoi en cours...' : 'Envoyer la demande'}
