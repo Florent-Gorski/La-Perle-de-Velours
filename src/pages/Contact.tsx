@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 
-function todayLocalISO(): string
-{
+function todayLocalISO(): string {
   const d = new Date();
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return d.toISOString().split('T')[0];
@@ -17,8 +16,7 @@ const countryCodes = [
   { value: "+44", label: "🇬🇧 +44" },
 ];
 
-const Contact: React.FC = () =>
-{
+const Contact: React.FC = () => {
   const [selectedForfait, setSelectedForfait] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
@@ -40,11 +38,9 @@ const Contact: React.FC = () =>
     "Forfait Détente", "Forfait Premium", "Prestation entreprise", "Autre",
   ];
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     if (!selectedForfait) return;
-    setFormData((prev) =>
-    {
+    setFormData((prev) => {
       const nextService = prev.service || selectedForfait;
       const line = `Forfait choisi : ${selectedForfait}`;
       const hasLine = prev.message.includes(line);
@@ -56,15 +52,13 @@ const Contact: React.FC = () =>
     });
   }, [selectedForfait]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-  {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
   // ===== SOLUTION OPTIMISÉE AVEC GESTION D'ERREURS ROBUSTE =====
-  const handleSubmit = async (e: React.FormEvent) =>
-  {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
@@ -88,10 +82,16 @@ const Contact: React.FC = () =>
     formDataToSend.append("date", formData.preferredDate);
     formDataToSend.append("heure", formData.preferredTime);
 
-    // URL du script Google Apps Script - À VÉRIFIER ET METTRE À JOUR
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyn37K2nyTbCmUyf2rhmhjmKfAP3VggGs_EP9PDb9WBN-m5uQBk2Hm8Lp4qBv3bu2xWjg/exec';
+    // ⚠️ ATTENTION: URL à remplacer par votre script Google Apps Script déployé
+    // Pour créer/configurer votre script, suivez les étapes ci-dessous
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec';
 
     try {
+      // Vérification de l'URL avant envoi
+      if (scriptURL === 'https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec') {
+        throw new Error('URL du script Google Apps Script non configurée');
+      }
+
       // Configuration de la requête avec timeout
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 secondes timeout
@@ -123,8 +123,7 @@ const Contact: React.FC = () =>
       setSelectedForfait("");
 
       // Message de succès automatiquement supprimé après 5 secondes
-      setTimeout(() =>
-      {
+      setTimeout(() => {
         if (submitStatus === "success") {
           setSubmitStatus("idle");
         }
