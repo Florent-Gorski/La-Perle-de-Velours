@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 
-/** Typage explicite du formulaire (évite les 'never') */
+/** Typage explicite du formulaire */
 type ContactForm = {
   name: string;
   email: string;
@@ -13,12 +13,8 @@ type ContactForm = {
   preferredTime: string;
 };
 
-/** Normalise une valeur potentiellement inconnue en string sûr */
-function toTrimmedString(v: unknown): string
-{
-  return typeof v === "string" ? v.trim() : "";
-}
-
+/** Helpers */
+const toTrimmedString = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 function todayLocalISO(): string
 {
   const d = new Date();
@@ -53,6 +49,18 @@ const Contact: React.FC = () =>
     preferredTime: "",
   });
 
+  // ---- CONFIG ENVOI ----
+  // 1) Lecture .env (si Vite l’injecte)
+  const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
+  // 2) Fallback *fonctionnel* (ton URL Apps Script) — garanti que ça marche immédiatement
+  const fallbackUrl =
+    "https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec";
+  // 3) Choix final
+  const scriptURL = envUrl || fallbackUrl;
+
+  // (debug optionnel)
+  // console.log("VITE_GAS_URL =", import.meta.env.VITE_GAS_URL, "=> used:", scriptURL);
+
   const services = [
     "Manucure",
     "Pédicure",
@@ -76,7 +84,7 @@ const Contact: React.FC = () =>
       return {
         ...prev,
         service: nextService,
-        message: hasLine ? prev.message : (prev.message ? `${prev.message}\n${line}` : line),
+        message: hasLine ? prev.message : prev.message ? `${prev.message}\n${line}` : line,
       };
     });
   }, [selectedForfait]);
@@ -112,27 +120,15 @@ const Contact: React.FC = () =>
     fd.append("date", formData.preferredDate);
     fd.append("heure", formData.preferredTime);
 
-    // Lecture sûre de l’URL d’Apps Script
-    const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
-    const fallbackUrl = ""; // (optionnel dev) mettre une URL /exec ici si besoin ponctuel
-    const scriptURL = envUrl || fallbackUrl;
-
-    if (!scriptURL) {
-      setSubmitStatus("error");
-      setErrorMessage(
-        "La passerelle de soumission n’est pas configurée. Ajoutez VITE_GAS_URL dans votre .env."
-      );
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
 
+      // IMPORTANT: on reste en no-cors si ton Apps Script ne renvoie pas les bons headers CORS
       await fetch(scriptURL, {
         method: "POST",
         body: fd,
+        // Si ton Apps Script renvoie correctement JSON + CORS, tu peux passer en 'cors' et lire la réponse
         mode: "no-cors",
         signal: controller.signal,
       });
