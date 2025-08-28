@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, Users, Clock, Gift, Star, Zap } from 'lucide-react';
+import { Building2, Users, Clock, Star, PartyPopper, Handshake, CalendarDays, Rocket, Award } from 'lucide-react';
 
 const Business: React.FC = () =>
 {
@@ -57,6 +57,16 @@ const Business: React.FC = () =>
     }
   ];
 
+  // --- AMÉLIORATION : Ajout d'icônes pour un impact visuel accru ---
+  const useCases = [
+    { icon: <CalendarDays className="w-8 h-8 text-perle-honey" />, title: 'Journées portes ouvertes', desc: 'Offrez une expérience unique à vos visiteurs' },
+    { icon: <Handshake className="w-8 h-8 text-perle-honey" />, title: 'Événements clients', desc: 'Créez un moment privilégié avec vos partenaires' },
+    { icon: <Users className="w-8 h-8 text-perle-honey" />, title: 'Team building', desc: 'Renforcez la cohésion d\'équipe par le bien-être' },
+    { icon: <PartyPopper className="w-8 h-8 text-perle-honey" />, title: 'Fêtes d\'entreprise', desc: 'Ajoutez une touche de luxe à vos célébrations' },
+    { icon: <Rocket className="w-8 h-8 text-perle-honey" />, title: 'Lancements produits', desc: 'Marquez les esprits lors de vos événements' },
+    { icon: <Award className="w-8 h-8 text-perle-honey" />, title: 'Salons professionnels', desc: 'Attirez les visiteurs sur votre stand' }
+  ];
+
   const testimonials = [
     {
       company: 'Tech Solutions SA',
@@ -77,46 +87,42 @@ const Business: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-perle-ivory">
-      {/* Hero (image locale, centré) */}
+      {/* Hero */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: 'url(/images/entreprises.jpg)', backgroundPosition: 'center center' }}
       >
         <div className="absolute inset-0 -z-10 bg-black/60" aria-hidden="true"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <Building2 className="w-16 h-16 text-white/80 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-playfair font-bold text-white mb-6">
             Services pour Entreprises
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto">
             Offrez à vos employés et clients des services de beauté et bien-être directement
-            dans vos locaux. Une initiative qui valorise votre image et améliore la satisfaction.
+            dans vos locaux.
           </p>
         </div>
       </section>
 
       {/* Benefits */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
-              Pourquoi choisir nos services ?
+              Pourquoi nous choisir ?
             </h2>
-            <p className="text-xl text-perle-warm-gray/70">
+            <p className="text-lg md:text-xl text-perle-warm-gray/70">
               Des avantages concrets pour votre entreprise
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div
                 key={index}
-                className="text-center p-8 bg-perle-soft-beige rounded-2xl hover:bg-perle-beige transition-colors duration-300"
+                className="text-center p-8 bg-perle-soft-beige rounded-2xl hover:shadow-lg transition-shadow duration-300"
               >
-                <div className="flex justify-center mb-6">
-                  {benefit.icon}
-                </div>
+                <div className="flex justify-center mb-6">{benefit.icon}</div>
                 <h3 className="text-xl font-playfair font-bold text-perle-warm-gray mb-4">{benefit.title}</h3>
                 <p className="text-perle-warm-gray/70 font-inter">{benefit.description}</p>
               </div>
@@ -126,22 +132,21 @@ const Business: React.FC = () =>
       </section>
 
       {/* Services for Business */}
-      <section className="py-20 bg-perle-ivory">
+      <section className="py-12 md:py-20 bg-perle-ivory">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
               Nos Formules Entreprise
             </h2>
-            <p className="text-xl text-perle-warm-gray/70">
+            <p className="text-lg md:text-xl text-perle-warm-gray/70">
               Des prestations adaptées à votre environnement professionnel
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
               >
                 <div className="bg-gradient-to-r from-perle-honey to-perle-light-honey p-6 text-white">
                   <h3 className="text-xl font-playfair font-bold mb-2">{service.category}</h3>
@@ -150,11 +155,11 @@ const Business: React.FC = () =>
                     <span className="font-bold">{service.price}</span>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-6 flex-grow">
                   <ul className="space-y-3 font-inter">
                     {service.services.map((item, itemIndex) => (
                       <li key={itemIndex} className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-perle-honey rounded-full"></div>
+                        <div className="w-2 h-2 bg-perle-honey rounded-full flex-shrink-0"></div>
                         <span className="text-perle-warm-gray/80">{item}</span>
                       </li>
                     ))}
@@ -166,73 +171,28 @@ const Business: React.FC = () =>
         </div>
       </section>
 
-      {/* Special Offers */}
-      <section className="py-20 bg-white">
+      {/* Use Cases --- SECTION AMÉLIORÉE --- */}
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-perle-soft-beige to-perle-beige rounded-3xl p-12">
-            <div className="text-center mb-12">
-              <Gift className="w-16 h-16 text-perle-honey mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
-                Offres Spéciales Entreprises
-              </h2>
-              <p className="text-xl text-perle-warm-gray/70">
-                Des avantages exclusifs pour nos partenaires professionnels
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 font-inter">
-              <div className="bg-white p-6 rounded-xl shadow-md text-center">
-                <Zap className="w-8 h-8 text-perle-honey mx-auto mb-4" />
-                <h3 className="font-bold text-perle-warm-gray mb-2">Forfait découverte</h3>
-                <p className="text-perle-warm-gray/70 text-sm">-20% sur la première intervention</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md text-center">
-                <Users className="w-8 h-8 text-perle-honey mx-auto mb-4" />
-                <h3 className="font-bold text-perle-warm-gray mb-2">Tarif dégressif</h3>
-                <p className="text-perle-warm-gray/70 text-sm">Plus de prestations = plus d'économies</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md text-center">
-                <Clock className="w-8 h-8 text-perle-honey mx-auto mb-4" />
-                <h3 className="font-bold text-perle-warm-gray mb-2">Planning flexible</h3>
-                <p className="text-perle-warm-gray/70 text-sm">Intervention pendant ou après les heures de bureau</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md text-center">
-                <Star className="w-8 h-8 text-perle-honey mx-auto mb-4" />
-                <h3 className="font-bold text-perle-warm-gray mb-2">Fidélité récompensée</h3>
-                <p className="text-perle-warm-gray/70 text-sm">Avantages cumulés sur les interventions régulières</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section className="py-20 bg-perle-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
-              Occasions Spéciales
+              Idéal pour Vos Événements
             </h2>
-            <p className="text-xl text-perle-warm-gray/70">
-              Nous intervenons pour tous vos événements professionnels
+            <p className="text-lg md:text-xl text-perle-warm-gray/70">
+              Nous intervenons pour toutes vos occasions professionnelles
             </p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: 'Journées portes ouvertes', desc: 'Offrez une expérience unique à vos visiteurs' },
-              { title: 'Événements clients', desc: 'Créez un moment privilégié avec vos partenaires' },
-              { title: 'Team building', desc: 'Renforcez la cohésion d\'équipe par le bien-être' },
-              { title: 'Fêtes d\'entreprise', desc: 'Ajoutez une touche de luxe à vos célébrations' },
-              { title: 'Lancements produits', desc: 'Marquez les esprits lors de vos événements' },
-              { title: 'Salons professionnels', desc: 'Attirez les visiteurs sur votre stand' }
-            ].map((occasion, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {useCases.map((occasion, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-perle-soft-beige p-6 rounded-2xl hover:shadow-lg transition-all duration-300 flex items-start space-x-4"
               >
-                <h3 className="text-lg font-playfair font-bold text-perle-warm-gray mb-3">{occasion.title}</h3>
-                <p className="text-perle-warm-gray/70 font-inter">{occasion.desc}</p>
+                <div className="flex-shrink-0 mt-1">{occasion.icon}</div>
+                <div>
+                  <h3 className="text-lg font-playfair font-bold text-perle-warm-gray mb-2">{occasion.title}</h3>
+                  <p className="text-perle-warm-gray/70 font-inter text-sm">{occasion.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -240,28 +200,24 @@ const Business: React.FC = () =>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-perle-ivory">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl md:text-4xl font-playfair font-bold text-perle-warm-gray mb-4">
               Ils nous font confiance
             </h2>
-            <p className="text-xl text-perle-warm-gray/70">
-              Témoignages de nos partenaires professionnels
-            </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-perle-soft-beige p-8 rounded-2xl hover:bg-perle-beige transition-colors duration-300"
+                className="bg-white p-8 rounded-2xl shadow-lg"
               >
-                <div className="mb-6">
-                  <h4 className="font-playfair font-bold text-perle-warm-gray mb-2">{testimonial.company}</h4>
-                  <p className="text-perle-warm-gray/80 italic font-inter">"{testimonial.testimonial}"</p>
+                <p className="text-perle-warm-gray/80 italic font-inter mb-6">"{testimonial.testimonial}"</p>
+                <div>
+                  <h4 className="font-playfair font-bold text-perle-warm-gray">{testimonial.company}</h4>
+                  <p className="text-sm text-perle-warm-gray/60 font-inter">- {testimonial.person}</p>
                 </div>
-                <p className="text-sm text-perle-warm-gray/60 font-inter">- {testimonial.person}</p>
               </div>
             ))}
           </div>
@@ -275,22 +231,14 @@ const Business: React.FC = () =>
             Prêt à sublimer votre entreprise ?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto font-inter">
-            Contactez-nous pour établir un devis personnalisé adapté à vos besoins et votre budget
+            Contactez-nous pour un devis personnalisé adapté à vos besoins.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/contact"
-              className="bg-white text-perle-honey px-8 py-4 rounded-full text-lg font-inter font-medium hover:bg-perle-ivory transition-all duration-300 hover:scale-105"
-            >
-              Demander un devis
-            </a>
-            <a
-              href="mailto:laperledevelours@gmail.com"
-              className="bg-perle-warm-gray text-white px-8 py-4 rounded-full text-lg font-inter font-medium hover:bg-perle-warm-gray/90 transition-all duration-300 hover:scale-105"
-            >
-              Email professionnel
-            </a>
-          </div>
+          <a
+            href="/contact"
+            className="inline-block bg-white text-perle-honey px-8 py-4 rounded-full text-lg font-inter font-medium hover:bg-perle-ivory transition-all duration-300 hover:scale-105"
+          >
+            Demander un devis
+          </a>
         </div>
       </section>
     </div>
