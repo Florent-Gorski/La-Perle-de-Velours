@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, MessageCircle, Send } from "lucide-react";
 
-/** Typage explicite du formulaire */
+/** Typage du formulaire */
 type ContactForm = {
   name: string;
   email: string;
@@ -15,13 +15,13 @@ type ContactForm = {
 
 /** Helpers */
 const toTrimmedString = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-function todayLocalISO(): string
-{
+function todayLocalISO(): string {
   const d = new Date();
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return d.toISOString().split("T")[0];
 }
 
+/** Codes pays */
 const countryCodes = [
   { value: "+41", label: "🇨🇭 +41" },
   { value: "+33", label: "🇫🇷 +33" },
@@ -29,10 +29,9 @@ const countryCodes = [
   { value: "+39", label: "🇮🇹 +39" },
   { value: "+32", label: "🇧🇪 +32" },
   { value: "+44", label: "🇬🇧 +44" },
-];
+] as const;
 
-const Contact: React.FC = () =>
-{
+const Contact: React.FC = () => {
   const [selectedForfait, setSelectedForfait] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
@@ -41,7 +40,7 @@ const Contact: React.FC = () =>
   const [formData, setFormData] = useState<ContactForm>({
     name: "",
     email: "",
-    phoneCode: "+41",
+    phoneCode: countryCodes[0].value,
     phone: "",
     service: "",
     message: "",
@@ -49,17 +48,8 @@ const Contact: React.FC = () =>
     preferredTime: "",
   });
 
-  // ---- CONFIG ENVOI ----
-  // 1) Lecture .env (si Vite l’injecte)
-  const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
-  // 2) Fallback *fonctionnel* (ton URL Apps Script) — garanti que ça marche immédiatement
-  const fallbackUrl =
-    "https://script.google.com/macros/s/AKfycbxCFTXLV8EUNbAba4i0Ara0c9GEECLI7o39klVur48Ti58Gd6KZ1u-DDOEyL994o4v7/exec";
-  // 3) Choix final
-  const scriptURL = envUrl || fallbackUrl;
-
-  // (debug optionnel)
-  // console.log("VITE_GAS_URL =", import.meta.env.VITE_GAS_URL, "=> used:", scriptURL);
+  // URL Apps Script depuis .env
+  const scriptURL = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
 
   const services = [
     "Manucure",
@@ -71,13 +61,12 @@ const Contact: React.FC = () =>
     "Forfait Premium",
     "Prestation entreprise",
     "Autre",
-  ];
+  ] as const;
 
-  useEffect(() =>
-  {
+  // Injection automatique du forfait choisi dans le message + service
+  useEffect(() => {
     if (!selectedForfait) return;
-    setFormData((prev) =>
-    {
+    setFormData((prev) => {
       const nextService = prev.service || selectedForfait;
       const line = `Forfait choisi : ${selectedForfait}`;
       const hasLine = prev.message.includes(line);
@@ -89,16 +78,15 @@ const Contact: React.FC = () =>
     });
   }, [selectedForfait]);
 
+  // Handlers utilisés par les inputs
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) =>
-  {
+  ) => {
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) =>
-  {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus("idle");
@@ -107,6 +95,13 @@ const Contact: React.FC = () =>
     if (!formData.name || !formData.email || !formData.phone || !formData.service) {
       setSubmitStatus("error");
       setErrorMessage("Veuillez remplir tous les champs obligatoires.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!scriptURL) {
+      setSubmitStatus("error");
+      setErrorMessage("URL du script Google Apps Script manquante (VITE_GAS_URL).");
       setIsSubmitting(false);
       return;
     }
@@ -124,12 +119,10 @@ const Contact: React.FC = () =>
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-      // IMPORTANT: on reste en no-cors si ton Apps Script ne renvoie pas les bons headers CORS
       await fetch(scriptURL, {
         method: "POST",
         body: fd,
-        // Si ton Apps Script renvoie correctement JSON + CORS, tu peux passer en 'cors' et lire la réponse
-        mode: "no-cors",
+        mode: "no-cors", // robuste pour Apps Script
         signal: controller.signal,
       });
 
@@ -139,7 +132,7 @@ const Contact: React.FC = () =>
       setFormData({
         name: "",
         email: "",
-        phoneCode: "+41",
+        phoneCode: countryCodes[0].value,
         phone: "",
         service: "",
         message: "",
@@ -156,9 +149,7 @@ const Contact: React.FC = () =>
         } else if (error.message.includes("Failed to fetch")) {
           setErrorMessage("Problème de connexion. Vérifiez votre connexion internet et réessayez.");
         } else {
-          setErrorMessage(
-            "Une erreur technique est survenue. Contactez-nous directement si le problème persiste."
-          );
+          setErrorMessage("Une erreur technique est survenue. Contactez-nous si le problème persiste.");
         }
       } else {
         setErrorMessage("Une erreur inattendue est survenue.");
@@ -171,6 +162,7 @@ const Contact: React.FC = () =>
 
   return (
     <div className="min-h-screen bg-perle-ivory">
+      {/* Hero */}
       <section
         className="relative py-20 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/images/contact.jpg)", backgroundPosition: "center 30%" }}
@@ -186,43 +178,80 @@ const Contact: React.FC = () =>
         </div>
       </section>
 
+      {/* Main */}
       <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-5 lg:gap-12">
+            {/* Colonne infos - utilise les icônes */}
             <div className="lg:col-span-2 mb-12 lg:mb-0">
               <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">
                 Informations
               </h2>
               <div className="space-y-6">
-                {[
-                  { icon: <Phone className="w-6 h-6 text-perle-honey" />, title: "Téléphone", value: "+41 12 345 67 89", href: "tel:+41123456789", desc: "Lun—Sam 8h—20h" },
-                  { icon: <MessageCircle className="w-6 h-6 text-perle-honey" />, title: "WhatsApp", value: "+41 12 345 67 89", href: "https://wa.me/41123456789", desc: "Réponse rapide" },
-                  { icon: <Mail className="w-6 h-6 text-perle-honey" />, title: "Email", value: "laperledevelours@gmail.com", href: "mailto:laperledevelours@gmail.com", desc: "Réponse sous 24h" },
-                  { icon: <MapPin className="w-6 h-6 text-perle-honey" />, title: "Zone d'intervention", value: "Lausanne & Canton de Vaud", desc: "Directement chez vous" },
-                ].map((item, index) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 mt-1">{item.icon}</div>
-                    <div>
-                      <h3 className="font-inter font-semibold text-perle-warm-gray">{item.title}</h3>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="text-perle-warm-gray/80">{item.value}</p>
-                      )}
-                      <p className="text-sm text-perle-warm-gray/60 font-inter">{item.desc}</p>
-                    </div>
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <Phone className="w-6 h-6 text-perle-honey" />
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-inter font-semibold text-perle-warm-gray">Téléphone</h3>
+                    <a
+                      href="tel:+41123456789"
+                      className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors"
+                    >
+                      +41 12 345 67 89
+                    </a>
+                    <p className="text-sm text-perle-warm-gray/60 font-inter">Lun—Sam 8h—20h</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <MessageCircle className="w-6 h-6 text-perle-honey" />
+                  </div>
+                  <div>
+                    <h3 className="font-inter font-semibold text-perle-warm-gray">WhatsApp</h3>
+                    <a
+                      href="https://wa.me/41123456789"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors"
+                    >
+                      +41 12 345 67 89
+                    </a>
+                    <p className="text-sm text-perle-warm-gray/60 font-inter">Réponse rapide</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <Mail className="w-6 h-6 text-perle-honey" />
+                  </div>
+                  <div>
+                    <h3 className="font-inter font-semibold text-perle-warm-gray">Email</h3>
+                    <a
+                      href="mailto:laperledevelours@gmail.com"
+                      className="text-perle-warm-gray/80 hover:text-perle-honey transition-colors"
+                    >
+                      laperledevelours@gmail.com
+                    </a>
+                    <p className="text-sm text-perle-warm-gray/60 font-inter">Réponse sous 24h</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="flex-shrink-0 mt-1">
+                    <MapPin className="w-6 h-6 text-perle-honey" />
+                  </div>
+                  <div>
+                    <h3 className="font-inter font-semibold text-perle-warm-gray">Zone d'intervention</h3>
+                    <p className="text-perle-warm-gray/80">Lausanne &amp; Canton de Vaud</p>
+                    <p className="text-sm text-perle-warm-gray/60 font-inter">Directement chez vous</p>
+                  </div>
+                </div>
               </div>
             </div>
 
+            {/* Formulaire */}
             <div className="lg:col-span-3">
               <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
                 <h2 className="text-2xl md:text-3xl font-playfair font-bold text-perle-warm-gray mb-6">
@@ -292,6 +321,7 @@ const Contact: React.FC = () =>
                       </div>
                     </div>
                   </div>
+
                   <div>
                     <label htmlFor="email" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
                       Email *
@@ -306,6 +336,7 @@ const Contact: React.FC = () =>
                       className="w-full px-4 py-3 border border-perle-beige/50 rounded-xl focus:ring-2 focus:ring-perle-honey/50 focus:border-perle-honey transition-colors"
                     />
                   </div>
+
                   <div>
                     <label htmlFor="service" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
                       Service souhaité *
@@ -319,19 +350,17 @@ const Contact: React.FC = () =>
                       className="w-full px-4 py-3 border border-perle-beige/50 rounded-xl focus:ring-2 focus:ring-perle-honey/50 focus:border-perle-honey transition-colors"
                     >
                       <option value="">Sélectionnez un service</option>
-                      {services.map((service, idx) => (
-                        <option key={idx} value={service}>
+                      {services.map((service) => (
+                        <option key={service} value={service}>
                           {service}
                         </option>
                       ))}
                     </select>
                   </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label
-                        htmlFor="preferredDate"
-                        className="block text-sm font-inter font-medium text-perle-warm-gray mb-2"
-                      >
+                      <label htmlFor="preferredDate" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
                         Date souhaitée
                       </label>
                       <input
@@ -345,10 +374,7 @@ const Contact: React.FC = () =>
                       />
                     </div>
                     <div>
-                      <label
-                        htmlFor="preferredTime"
-                        className="block text-sm font-inter font-medium text-perle-warm-gray mb-2"
-                      >
+                      <label htmlFor="preferredTime" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
                         Heure souhaitée
                       </label>
                       <input
@@ -361,6 +387,7 @@ const Contact: React.FC = () =>
                       />
                     </div>
                   </div>
+
                   <div>
                     <label htmlFor="message" className="block text-sm font-inter font-medium text-perle-warm-gray mb-2">
                       Message
@@ -375,6 +402,7 @@ const Contact: React.FC = () =>
                       className="w-full px-4 py-3 border border-perle-beige/50 rounded-xl focus:ring-2 focus:ring-perle-honey/50 focus:border-perle-honey transition-colors resize-y"
                     />
                   </div>
+
                   <button
                     type="submit"
                     disabled={isSubmitting}

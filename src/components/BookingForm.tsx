@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// AMÉLIORATION : Helper function pour obtenir la date d'aujourd'hui au format YYYY-MM-DD
+// Helper pour la date min (pas de date passée)
 const getTodaysDate = () =>
 {
   const today = new Date();
@@ -59,9 +59,7 @@ export function BookingForm()
     setStatus({ message: "", type: "" });
 
     const formData = new FormData(event.currentTarget);
-
-    // Lecture via .env
-    const scriptURL = import.meta.env.VITE_GAS_URL ?? "";
+    const scriptURL = (import.meta.env.VITE_GAS_URL ?? "").trim();
 
     if (!scriptURL) {
       setStatus({
@@ -73,33 +71,35 @@ export function BookingForm()
     }
 
     try {
-      const response = await fetch(scriptURL, {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+      await fetch(scriptURL, {
         method: "POST",
         body: formData,
+        mode: "no-cors", // indispensable pour Apps Script
+        signal: controller.signal,
       });
 
-      if (!response.ok) {
-        throw new Error("La réponse du serveur n'est pas valide.");
-      }
+      clearTimeout(timeoutId);
 
-      const data = await response.json();
+      // On suppose succès si pas d’erreur réseau
+      setStatus({ message: "Merci ! Votre demande a bien été envoyée.", type: "success" });
+      (event.target as HTMLFormElement).reset();
 
-      if (data.result === "success") {
-        setStatus({ message: "Merci ! Votre demande a bien été envoyée.", type: "success" });
-        (event.target as HTMLFormElement).reset();
-
-        setTimeout(() =>
-        {
-          setStatus({ message: "", type: "" });
-        }, 6000);
-      } else {
-        throw new Error(data.message || "Une erreur est survenue lors du traitement.");
-      }
+      setTimeout(() =>
+      {
+        setStatus({ message: "", type: "" });
+      }, 6000);
     } catch (error) {
       if (error instanceof Error) {
-        setStatus({ message: `Erreur : ${error.message}`, type: "error" });
+        if (error.name === "AbortError") {
+          setStatus({ message: "La requête a pris trop de temps. Réessayez.", type: "error" });
+        } else {
+          setStatus({ message: `Erreur : ${error.message}`, type: "error" });
+        }
       } else {
-        setStatus({ message: "Une erreur inconnue est survenue.", type: "error" });
+        setStatus({ message: "Erreur inconnue.", type: "error" });
       }
     } finally {
       setIsLoading(false);
