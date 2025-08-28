@@ -54,7 +54,7 @@ const Contact: React.FC = () =>
   const envUrl = toTrimmedString(import.meta.env.VITE_GAS_URL ?? "");
   // 2) Fallback *fonctionnel* (ton URL Apps Script) — garanti que ça marche immédiatement
   const fallbackUrl =
-    "https://script.google.com/macros/s/AKfycbw8jKQiINucKyHcqcOkpBlkQHduA-9tGaG_qR5WkWWuVLo3jhgnqsXYsby20J4hqN2T/exec";
+    "https://script.google.com/macros/s/AKfycbxCFTXLV8EUNbAba4i0Ara0c9GEECLI7o39klVur48Ti58Gd6KZ1u-DDOEyL994o4v7/exec";
   // 3) Choix final
   const scriptURL = envUrl || fallbackUrl;
 
